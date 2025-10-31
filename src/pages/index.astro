@@ -1,11 +1,21 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const title = 'uwe.rw';
+import { ClientRouter } from 'astro:transitions';
+import '../styles/home.css';
 ---
-
-<Layout>
-	<Welcome />
-</Layout>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>{title}</title>
+  <ClientRouter />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap"
+  />
+</head>
+<main class="screen" aria-labelledby="uwe-title">
+  <h1 id="uwe-title" class="brand"></h1>
+  <footer class="stamp">SAINT</footer>
+</main>

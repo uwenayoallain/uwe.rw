@@ -9,6 +9,28 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.15.2"
+    "@astrojs/check": "^0.9.5",
+    "@astrojs/sitemap": "^3.6.0",
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/jersey-25": "^5.1.0",
+    "@fontsource/space-grotesk": "^5.1.0",
+    "@tailwindcss/vite": "^4.1.16",
+    "astro": "^5.15.2",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.0",
+    "lottie-web": "^5.12.0",
+    "maath": "^0.10.7",
+    "motion": "^11.11.16",
+    "postprocessing": "^6.36.4",
+    "stats.js": "^0.17.0",
+    "tailwindcss": "^4.1.16",
+    "three": "^0.170.0",
+    "three-stdlib": "^2.31.1",
+    "tslib": "^2.8.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/stats.js": "^0.17.3",
+    "@types/three": "^0.170.0"
   }
 }
