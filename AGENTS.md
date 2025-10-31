@@ -1,38 +1,34 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `src/pages/` holds Astro route entries; file names map directly to URLs (`src/pages/index.astro` serves `/`).
-- `src/layouts/` defines shared shells for pages; prefer abstracting site-wide chrome here before reusing it in pages.
-- `src/components/` stores reusable UI units; keep component filenames in PascalCase (e.g., `HeroBanner.astro`).
-- `src/assets/` contains authored media; reference large, unprocessed files from here instead of `public/`.
-- `public/` exposes static files verbatim (favicons, robots.txt). Assets placed here bypass Astro’s build pipeline.
-- `src/lib/utils/` centralizes math, animation, DOM, and Three helpers (`math.ts`, `animation.ts`, `dom.ts`, `three.ts`) to keep feature code lean.
-- Astro view transitions are enabled in `astro.config.mjs:3`; keep `<ViewTransitions />` mounted in the page head (_template or individual pages) for seamless navigation swaps.
+- Astro routes live in `src/pages/`; file names map to URLs (`src/pages/index.astro` → `/`), so keep kebab-case for new routes.
+- Shared chrome belongs in `src/layouts/`; mount `<ViewTransitions />` in layout heads to preserve transitions.
+- Reusable pieces go under `src/components/` with PascalCase names, while authored media sits in `src/assets/`.
+- Utilities for math, animation, DOM, and Three helpers stay in `src/lib/utils/` to keep pages lean; avoid mixing feature logic here.
+- Static passthrough files (`favicon.ico`, `robots.txt`) belong in `public/`.
 
 ## Build, Test, and Development Commands
-- `pnpm install` resolves dependencies; always rerun after syncing `pnpm-lock.yaml`.
-- `pnpm dev` launches the local dev server with hot module reloading at `http://localhost:4321`.
-- `pnpm build` produces the optimized static output under `./dist`.
-- `pnpm preview` serves the latest build to mimic production deployment.
-- `pnpm astro check` runs Astro’s type and accessibility checks; use it before submitting changes.
+- `pnpm install`: restore dependencies; rerun whenever `pnpm-lock.yaml` changes.
+- `pnpm dev`: start the HMR dev server at `http://localhost:4321`.
+- `pnpm build`: produce optimized output in `dist/`.
+- `pnpm preview`: serve the latest build locally for production parity.
+- `pnpm astro check`: run type and accessibility analysis before raising PRs.
 
 ## Coding Style & Naming Conventions
-- Use 2-space indentation for `.astro`, `.ts`, and `.css` files to match existing formatting.
-- Co-locate styles in `src/styles/global.css` and compose UI with Tailwind utility classes rather than ad-hoc CSS.
-- Favor descriptive component names (`UserBadge.astro`) and kebab-case route files (`blog-post.astro`).
-- Keep imports relative within a feature folder; prefer absolute paths (`@/components/...`) only if configured.
+- Use 2-space indentation in `.astro`, `.ts`, and `.css` files; favor Tailwind utilities over custom CSS, extending `src/styles/global.css` when needed.
+- Name components in PascalCase (`HeroBanner.astro`) and routes in kebab-case (`blog-post.astro`); keep imports relative within a feature.
+- Default to ASCII characters; document-only comments should be succinct and explanatory.
 
 ## Testing Guidelines
-- This project currently has no automated test suite; validate changes with `pnpm astro check` and manual UI smoke tests in dev and preview modes.
-- When adding tests, align filenames with the unit under test (`Component.test.ts`) and ensure they run in CI-compatible environments.
-- Document any new testing commands in `package.json` scripts to keep onboarding smooth.
+- Project has no automated test suite yet; rely on `pnpm astro check` plus manual smoke tests in `pnpm dev` and `pnpm preview`.
+- When adding tests, match filenames to their subject (`Component.test.ts`), ensure they run headless in CI, and script them in `package.json`.
 
 ## Commit & Pull Request Guidelines
-- Follow conventional, action-oriented commit messages (`Add hero layout animation`); group related edits into a single commit when practical.
-- Branch names should reflect scope (`feature/add-testimonials`, `fix/nav-spacing`).
-- Pull requests must include: summary of changes, testing notes (commands run and results), and any linked issue IDs.
-- Add screenshots or screen recordings for UI changes, especially when they alter layout, color, or motion.
+- Write action-oriented conventional commits (`Add hero layout animation`) and group related edits together.
+- Branch names should convey scope (`feature/add-testimonials`, `fix/nav-spacing`).
+- Pull requests must include a change summary, commands executed (with results), linked issue IDs, and UI captures when layout, color, or motion changes.
+- Explain any `astro.config.mjs` adjustments and environment variable updates in the PR description.
 
-## Configuration & Secrets
-- Store runtime configuration in `.env` files and reference them via Astro’s environment APIs; never commit secrets to the repo.
-- Update `astro.config.mjs` cautiously, explaining rationale in PR descriptions when altering integrations or build targets.
+## Security & Configuration Notes
+- Store runtime secrets only in `.env` files; never commit them.
+- Prefer referencing assets through Astro pipelines; only bypass via `public/` when necessary.
