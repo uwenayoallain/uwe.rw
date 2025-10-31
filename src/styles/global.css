@@ -1,20 +1,44 @@
-@import '@fontsource/inter/variable.css';
-@import '@fontsource/space-grotesk/latin.css';
-@import '@fontsource/jersey-25';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/jersey-25/index.css';
 @import 'tailwindcss';
 
+@theme {
+  --font-family-sans: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-display: 'Jersey 25', 'Space Grotesk', 'Inter', sans-serif;
+  --font-family-accent: 'Space Grotesk', 'Inter', sans-serif;
+  --color-brand-navy: #1B487B;
+  --color-brand-gold: #F4D619;
+  --color-brand-blush: #EACAAF;
+  --color-brand-stone: #7A7A7A;
+  --color-surface-900: #151516;
+  --color-surface-950: #0D0D0D;
+}
+
 :root {
-  --font-sans: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'Jersey 25', 'Inter Variable', sans-serif;
-  --font-accent: 'Space Grotesk', 'Inter Variable', sans-serif;
-  background-color: #000;
+  background-color: var(--color-surface-950);
   color: #fff;
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: inherit;
-  color: inherit;
-  min-height: 100vh;
-  view-transition-name: body;
+@layer base {
+  body {
+    @apply font-sans bg-surface-950 text-white min-h-screen antialiased;
+    view-transition-name: body;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-family-display);
+}
+
+@utility font-accent {
+  font-family: var(--font-family-accent);
 }
