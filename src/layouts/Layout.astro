@@ -1,0 +1,64 @@
+---
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import Preloader from "../components/Preloader.astro";
+import Cursor from "../components/Cursor.astro";
+import GridBackground from "../components/GridBackground.astro";
+import Navbar from "../components/Navbar.astro";
+
+interface Props {
+    title: string;
+    description?: string;
+}
+
+const { title, description = "UWENAYO Alain Pacifique - Software Developer" } =
+    Astro.props;
+---
+
+<!doctype html>
+<html lang='en'>
+    <head>
+        <meta charset='UTF-8' />
+        <meta name='description' content={description} />
+        <meta name='viewport' content='width=device-width' />
+        <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+        <meta name='generator' content={Astro.generator} />
+        <title>{title}</title>
+        <ClientRouter />
+    </head>
+    <body>
+        <div class='noise-overlay'></div>
+        <GridBackground />
+        <Navbar />
+        <Preloader />
+        <Cursor />
+        <div class='container'>
+            <slot />
+        </div>
+        <script type='module'>
+            import { initAnimations } from "../lib/animations.js";
+
+            // Run on initial load
+            initAnimations();
+
+            // Run on view transitions
+            document.addEventListener("astro:page-load", () => {
+                initAnimations();
+            });
+        </script>
+    </body>
+</html>
+
+<style is:global>
+    .noise-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9000;
+        opacity: 0.05;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+</style>

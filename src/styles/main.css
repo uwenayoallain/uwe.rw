@@ -1,0 +1,105 @@
+@import './reset.css';
+@import './variables.css';
+
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    cursor: default;
+}
+
+::selection {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s var(--ease-out-expo);
+}
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+/* Typography Utilities */
+.text-display {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: var(--text-display);
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+/* Layout Utilities */
+.grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.grid-1 {
+    grid-template-columns: 1fr;
+}
+
+.grid-2 {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .grid-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.section {
+    margin-bottom: var(--space-2xl);
+    position: relative;
+}
+
+/* Glassmorphism */
+.glass {
+    background: var(--color-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-glass-border);
+}
+
+/* Utility */
+.overflow-hidden {
+    overflow: hidden;
+}

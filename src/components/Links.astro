@@ -1,0 +1,106 @@
+---
+const links = [
+    { name: "GitHub", url: "https://github.com/uwenayoallain", label: "Code" },
+    {
+        name: "LinkedIn",
+        url: "https://linkedin.com/in/uwenayoallain",
+        label: "Connect",
+    },
+    { name: "Email", url: "mailto:hello@uwe.rw", label: "Contact" },
+    { name: "Twitter/X", url: "https://x.com/uwenayoallain", label: "Follow" },
+];
+---
+
+<section class='links section'>
+    <div class='section-header'>
+        <h2 class='section-title font-mono text-muted'>Connect</h2>
+        <div class='line'></div>
+    </div>
+
+    <ul class='link-list'>
+        {
+            links.map((link) => (
+                <li>
+                    <a
+                        href={link.url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        class='magnetic-link glass'>
+                        <span class='link-name'>{link.name}</span>
+                        <span class='link-label font-mono text-muted'>
+                            {link.label}
+                        </span>
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</section>
+
+<style>
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        margin-bottom: var(--space-lg);
+    }
+
+    .section-title {
+        font-size: var(--text-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-brand-gold);
+    }
+
+    .line {
+        height: 1px;
+        background: var(--color-border);
+        width: 100%;
+        opacity: 0.5;
+    }
+
+    .link-list {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-sm);
+    }
+
+    .magnetic-link {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: var(--space-md);
+        border-radius: var(--radius-sm);
+        height: 100%;
+        min-height: 140px;
+        transition: all 0.4s var(--ease-out-expo);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid transparent;
+    }
+
+    .magnetic-link:hover {
+        background: rgba(244, 214, 25, 0.05);
+        border-color: rgba(244, 214, 25, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .link-name {
+        font-size: var(--text-xl);
+        font-weight: 500;
+    }
+
+    .link-label {
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        align-self: flex-end;
+        color: var(--color-brand-gold);
+        opacity: 0.8;
+    }
+
+    .magnetic-link:hover .link-label {
+        opacity: 1;
+    }
+</style>

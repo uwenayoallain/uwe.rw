@@ -1,0 +1,46 @@
+<div class='grid-background'>
+    <div class='grid-lines vertical'></div>
+    <div class='grid-lines horizontal'></div>
+</div>
+
+<style>
+    .grid-background {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .grid-lines {
+        position: absolute;
+        inset: 0;
+        background-size: 100px 100px;
+        mask-image: radial-gradient(
+            circle at center,
+            black 40%,
+            transparent 80%
+        );
+        -webkit-mask-image: radial-gradient(
+            circle at center,
+            black 40%,
+            transparent 80%
+        );
+    }
+
+    .vertical {
+        background-image: linear-gradient(
+            to right,
+            var(--color-grid) 1px,
+            transparent 1px
+        );
+    }
+
+    .horizontal {
+        background-image: linear-gradient(
+            to bottom,
+            var(--color-grid) 1px,
+            transparent 1px
+        );
+    }
+</style>

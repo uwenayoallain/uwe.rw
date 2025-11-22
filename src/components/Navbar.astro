@@ -1,0 +1,110 @@
+---
+const links = [
+    { name: "Work", url: "#work" },
+    { name: "About", url: "#about" },
+    { name: "Contact", url: "#contact" },
+];
+---
+
+<nav class='navbar'>
+    <div class='container'>
+        <div class='nav-content'>
+            <a href='/' class='logo magnetic-link'>UWE.RW</a>
+
+            <div class='nav-links'>
+                <a href='/works' class='nav-link magnetic-link'>Works</a>
+                <a href='/services' class='nav-link magnetic-link'>Services</a>
+                <a href='/about' class='nav-link magnetic-link'>About</a>
+                <a href='/blog' class='nav-link magnetic-link'>Blog</a>
+            </div>
+
+            <div class='menu-toggle'>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        padding: var(--space-md) 0;
+        mix-blend-mode: difference;
+    }
+
+    .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: var(--text-lg);
+        color: var(--color-text);
+        text-decoration: none;
+        letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: var(--space-md);
+    }
+
+    .nav-link {
+        color: var(--color-text);
+        text-decoration: none;
+        font-size: var(--text-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: var(--color-text);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.4s var(--ease-out-expo);
+    }
+
+    .nav-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+
+    .menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 6px;
+        cursor: pointer;
+    }
+
+    .menu-toggle span {
+        width: 24px;
+        height: 2px;
+        background-color: var(--color-text);
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        .menu-toggle {
+            display: flex;
+        }
+    }
+</style>

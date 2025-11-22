@@ -1,0 +1,172 @@
+---
+const services = [
+    {
+        id: "01",
+        title: "Web Design",
+        description:
+            "Crafting visually stunning and user-centric interfaces that leave a lasting impression.",
+    },
+    {
+        id: "02",
+        title: "Development",
+        description:
+            "Building robust, scalable, and high-performance websites using modern technologies.",
+    },
+    {
+        id: "03",
+        title: "SEO Optimization",
+        description:
+            "Enhancing visibility and driving organic traffic through strategic optimization.",
+    },
+    {
+        id: "04",
+        title: "Brand Identity",
+        description:
+            "Defining and elevating your brand's voice and visual language across all touchpoints.",
+    },
+];
+---
+
+<section id='services' class='section services'>
+    <div class='container'>
+        <div class='section-header fade-up'>
+            <h2 class='section-title'>Services</h2>
+            <p class='section-subtitle'>How I can help you</p>
+        </div>
+
+        <div class='services-list'>
+            {
+                services.map((service) => (
+                    <div class='service-item fade-up'>
+                        <div class='service-id'>{service.id}</div>
+                        <div class='service-content'>
+                            <h3 class='service-title'>{service.title}</h3>
+                            <p class='service-description'>
+                                {service.description}
+                            </p>
+                        </div>
+                        <div class='service-icon'>
+                            <svg
+                                width='24'
+                                height='24'
+                                viewBox='0 0 24 24'
+                                fill='none'
+                                xmlns='http://www.w3.org/2000/svg'>
+                                <path
+                                    d='M7 17L17 7M17 7H7M17 7V17'
+                                    stroke='currentColor'
+                                    stroke-width='2'
+                                    stroke-linecap='round'
+                                    stroke-linejoin='round'
+                                />
+                            </svg>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .services {
+        padding: var(--space-2xl) 0;
+    }
+
+    .section-header {
+        margin-bottom: var(--space-xl);
+    }
+
+    .section-title {
+        font-size: var(--text-3xl);
+        font-weight: 700;
+        margin-bottom: var(--space-sm);
+    }
+
+    .section-subtitle {
+        font-size: var(--text-lg);
+        color: var(--color-text-muted);
+    }
+
+    .services-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .service-item {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        align-items: flex-start;
+        padding: var(--space-lg) 0;
+        border-top: 1px solid var(--color-border);
+        transition: background-color 0.3s ease;
+        cursor: default;
+    }
+
+    .service-item:last-child {
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .service-item:hover {
+        background-color: var(--color-surface-hover);
+    }
+
+    .service-id {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        padding-left: var(--space-sm);
+    }
+
+    .service-title {
+        font-size: var(--text-2xl);
+        font-weight: 500;
+        margin-bottom: var(--space-xs);
+    }
+
+    .service-description {
+        font-size: var(--text-base);
+        color: var(--color-text-muted);
+        max-width: 500px;
+    }
+
+    .service-icon {
+        display: flex;
+        justify-content: flex-end;
+        padding-right: var(--space-sm);
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .service-item:hover .service-icon {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    @media (max-width: 768px) {
+        .service-item {
+            grid-template-columns: auto 1fr;
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+        }
+
+        .service-id {
+            grid-row: 1;
+            padding-left: 0;
+        }
+
+        .service-content {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+        }
+
+        .service-icon {
+            display: none;
+        }
+
+        .service-title {
+            font-size: var(--text-xl);
+        }
+    }
+</style>

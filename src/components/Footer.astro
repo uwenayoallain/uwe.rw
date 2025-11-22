@@ -1,0 +1,147 @@
+---
+const links = [
+    { name: "GitHub", url: "https://github.com/uwenayoallain", label: "Code" },
+    {
+        name: "LinkedIn",
+        url: "https://linkedin.com/in/uwenayoallain",
+        label: "Connect",
+    },
+    { name: "Email", url: "mailto:hello@uwe.rw", label: "Contact" },
+    { name: "Twitter/X", url: "https://x.com/uwenayoallain", label: "Follow" },
+];
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer id='contact' class='footer section'>
+    <div class='footer-content'>
+        <h2 class='cta-text text-giant font-mono'>
+            LET'S<br />WORK<br />TOGETHER
+        </h2>
+
+        <div class='footer-bottom'>
+            <div class='links-grid'>
+                {
+                    links.map((link) => (
+                        <a
+                            href={link.url}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            class='footer-link magnetic-link'>
+                            <span class='link-name'>{link.name}</span>
+                            <span class='arrow'>&nearr;</span>
+                        </a>
+                    ))
+                }
+            </div>
+
+            <div class='copyright text-muted font-mono'>
+                &copy; {currentYear} UWENAYO Alain Pacifique.
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const ctaText = document.querySelector(".cta-text") as HTMLElement;
+
+        if (ctaText) {
+            const colors = [
+                "var(--color-brand-gold)",
+                "var(--color-brand-navy)",
+            ];
+
+            let currentIndex = Math.floor(Math.random() * colors.length);
+
+            const updateColor = () => {
+                ctaText.style.setProperty(
+                    "--hover-color",
+                    colors[currentIndex],
+                );
+            };
+
+            // Set initial random color
+            updateColor();
+
+            // Change color on mouse leave (alternating)
+            ctaText.addEventListener("mouseleave", () => {
+                currentIndex = (currentIndex + 1) % colors.length;
+                updateColor();
+            });
+        }
+    });
+</script>
+
+<style>
+    .footer {
+        margin-bottom: 0;
+        padding-bottom: var(--space-lg);
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .cta-text {
+        line-height: 0.8;
+        letter-spacing: -0.05em;
+        margin-bottom: var(--space-2xl);
+        color: var(--color-text);
+        transition: color 0.3s ease;
+        cursor: default;
+        font-size: clamp(3rem, 12vw, 10rem);
+    }
+
+    .cta-text:hover {
+        color: var(--hover-color, var(--color-brand-gold));
+    }
+
+    .footer-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xl);
+        border-top: 1px solid var(--color-border);
+        padding-top: var(--space-lg);
+    }
+
+    @media (min-width: 768px) {
+        .footer-bottom {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+    }
+
+    .links-grid {
+        display: flex;
+        gap: var(--space-sm);
+        flex-wrap: wrap;
+    }
+
+    .footer-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: var(--text-base);
+        padding: var(--space-xs) var(--space-md);
+        border: 1px solid var(--color-border);
+        border-radius: 100px;
+        background: rgba(255, 255, 255, 0.01);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s var(--ease-out-expo);
+    }
+
+    .footer-link:hover {
+        background: var(--color-text);
+        color: var(--color-bg);
+        border-color: var(--color-text);
+        transform: translateY(-2px);
+    }
+
+    .copyright {
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        opacity: 0.6;
+    }
+</style>

@@ -1,0 +1,201 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/Footer.astro";
+
+const stats = [
+    { number: "3+", label: "Years Experience" },
+    { number: "20+", label: "Projects Delivered" },
+    { number: "100%", label: "Client Satisfaction" },
+    { number: "5", label: "Awards Won" },
+];
+---
+
+<Layout title='About | UWENAYO Alain Pacifique'>
+    <main class='about-page'>
+        <section class='page-hero'>
+            <div class='container'>
+                <h1 class='page-title fade-up'>About Me</h1>
+                <p class='page-subtitle fade-up'>
+                    Designer, Developer, and Creative Thinker.
+                </p>
+            </div>
+        </section>
+
+        <section class='bio-section section'>
+            <div class='container'>
+                <div class='bio-grid'>
+                    <div class='bio-content fade-up'>
+                        <h2 class='section-heading'>
+                            The Person Behind the Pixels
+                        </h2>
+                        <p class='text-body'>
+                            I'm Alain, a software developer based in Kigali,
+                            Rwanda. I specialize in building digital experiences
+                            that are not only visually stunning but also highly
+                            functional and performant.
+                        </p>
+                        <p class='text-body'>
+                            My journey started with a curiosity for how things
+                            work on the web. Over the years, that curiosity has
+                            evolved into a passion for crafting pixel-perfect
+                            interfaces and robust backend systems. I believe
+                            that good design is invisible—it just works.
+                        </p>
+                        <p class='text-body'>
+                            When I'm not coding, you can find me exploring new
+                            technologies, contributing to open-source projects,
+                            or seeking inspiration in the world around me.
+                        </p>
+                    </div>
+                    <div class='bio-image fade-up'>
+                        <div class='image-placeholder glass'>
+                            <!-- Replace with actual image -->
+                            <div class='placeholder-text'>Image</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class='stats-section section'>
+            <div class='container'>
+                <div class='stats-grid'>
+                    {
+                        stats.map((stat) => (
+                            <div class='stat-item fade-up'>
+                                <span class='stat-number'>{stat.number}</span>
+                                <span class='stat-label'>{stat.label}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <section class='philosophy-section section'>
+            <div class='container'>
+                <div class='philosophy-content fade-up'>
+                    <h2 class='section-heading'>My Philosophy</h2>
+                    <blockquote class='philosophy-quote'>
+                        "Simplicity is the ultimate sophistication. I strive to
+                        create designs that are clean, intuitive, and
+                        impactful."
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <Footer />
+    </main>
+</Layout>
+
+<style>
+    .about-page {
+        padding-top: var(--space-3xl);
+    }
+
+    .page-hero {
+        padding: var(--space-2xl) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .page-title {
+        font-size: clamp(3rem, 8vw, 6rem);
+        font-weight: 800;
+        line-height: 0.9;
+        margin-bottom: var(--space-md);
+        text-transform: uppercase;
+    }
+
+    .page-subtitle {
+        font-size: var(--text-xl);
+        color: var(--color-text-muted);
+        max-width: 600px;
+    }
+
+    .bio-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-3xl);
+        align-items: center;
+    }
+
+    .section-heading {
+        font-size: var(--text-3xl);
+        font-weight: 700;
+        margin-bottom: var(--space-lg);
+    }
+
+    .text-body {
+        font-size: var(--text-lg);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-md);
+        line-height: 1.6;
+    }
+
+    .image-placeholder {
+        width: 100%;
+        aspect-ratio: 1;
+        background: var(--color-surface);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .placeholder-text {
+        color: var(--color-text-muted);
+        font-family: var(--font-mono);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-xl);
+        padding: var(--space-2xl) 0;
+        border-top: 1px solid var(--color-border);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        display: block;
+        font-size: var(--text-4xl);
+        font-weight: 800;
+        color: var(--color-brand-gold);
+        margin-bottom: var(--space-xs);
+    }
+
+    .stat-label {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+    }
+
+    .philosophy-section {
+        text-align: center;
+    }
+
+    .philosophy-quote {
+        font-size: var(--text-2xl);
+        font-style: italic;
+        max-width: 800px;
+        margin: 0 auto;
+        color: var(--color-text);
+    }
+
+    @media (max-width: 768px) {
+        .bio-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-lg);
+        }
+    }
+</style>

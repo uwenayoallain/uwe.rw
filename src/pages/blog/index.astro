@@ -1,0 +1,163 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Footer from "../../components/Footer.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("posts")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<Layout title='Blog | UWENAYO Alain Pacifique'>
+    <main class='blog-page'>
+        <section class='page-hero'>
+            <div class='container'>
+                <h1 class='page-title fade-up'>Thoughts</h1>
+                <p class='page-subtitle fade-up'>
+                    Insights on design, development, and technology.
+                </p>
+            </div>
+        </section>
+
+        <section class='blog-list-section section'>
+            <div class='container'>
+                <div class='blog-grid'>
+                    {
+                        posts.map((post) => (
+                            <a
+                                href={`/blog/${post.slug}/`}
+                                class='blog-card fade-up'>
+                                <div class='blog-image-container'>
+                                    {post.data.heroImage && (
+                                        <img
+                                            src={post.data.heroImage}
+                                            alt={post.data.title}
+                                            class='blog-image'
+                                        />
+                                    )}
+                                </div>
+                                <div class='blog-content'>
+                                    <div class='blog-meta'>
+                                        <span class='blog-date'>
+                                            {post.data.pubDate.toLocaleDateString(
+                                                "en-US",
+                                                {
+                                                    year: "numeric",
+                                                    month: "long",
+                                                    day: "numeric",
+                                                },
+                                            )}
+                                        </span>
+                                        <span class='blog-tag'>
+                                            {post.data.tags[0]}
+                                        </span>
+                                    </div>
+                                    <h2 class='blog-title'>
+                                        {post.data.title}
+                                    </h2>
+                                    <p class='blog-description'>
+                                        {post.data.description}
+                                    </p>
+                                </div>
+                            </a>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <Footer />
+    </main>
+</Layout>
+
+<style>
+    .blog-page {
+        padding-top: var(--space-3xl);
+    }
+
+    .page-hero {
+        padding: var(--space-2xl) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .page-title {
+        font-size: clamp(3rem, 8vw, 6rem);
+        font-weight: 800;
+        line-height: 0.9;
+        margin-bottom: var(--space-md);
+        text-transform: uppercase;
+    }
+
+    .page-subtitle {
+        font-size: var(--text-xl);
+        color: var(--color-text-muted);
+        max-width: 600px;
+    }
+
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-2xl);
+        padding: var(--space-3xl) 0;
+    }
+
+    .blog-card {
+        display: block;
+        text-decoration: none;
+        color: var(--color-text);
+        transition: transform 0.3s ease;
+    }
+
+    .blog-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .blog-image-container {
+        width: 100%;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        border-radius: var(--radius-sm);
+        margin-bottom: var(--space-md);
+        background: var(--color-surface);
+    }
+
+    .blog-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .blog-card:hover .blog-image {
+        transform: scale(1.05);
+    }
+
+    .blog-meta {
+        display: flex;
+        gap: var(--space-sm);
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-xs);
+        text-transform: uppercase;
+    }
+
+    .blog-title {
+        font-size: var(--text-2xl);
+        font-weight: 700;
+        margin-bottom: var(--space-sm);
+        line-height: 1.2;
+    }
+
+    .blog-description {
+        font-size: var(--text-base);
+        color: var(--color-text-muted);
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .blog-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

@@ -1,0 +1,193 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/Footer.astro";
+
+const projects = [
+    {
+        title: "Project Alpha",
+        category: "Web Design & Development",
+        image: "/project_thumbnail_1.png", // Placeholder
+        year: "2024",
+        slug: "project-alpha",
+        description:
+            "A cutting-edge web application designed to revolutionize the way users interact with data.",
+    },
+    {
+        title: "Neon Horizon",
+        category: "Brand Identity",
+        image: "/project_thumbnail_1.png", // Placeholder
+        year: "2023",
+        slug: "neon-horizon",
+        description:
+            "A bold and vibrant brand identity for a futuristic tech startup.",
+    },
+    {
+        title: "Quantum Flow",
+        category: "Interactive Experience",
+        image: "/project_thumbnail_1.png", // Placeholder
+        year: "2023",
+        slug: "quantum-flow",
+        description:
+            "An immersive digital experience that explores the boundaries of web animation.",
+    },
+    {
+        title: "Echo Valley",
+        category: "E-commerce",
+        image: "/project_thumbnail_1.png", // Placeholder
+        year: "2022",
+        slug: "echo-valley",
+        description:
+            "A seamless e-commerce platform for a sustainable fashion brand.",
+    },
+];
+---
+
+<Layout title='Works | UWENAYO Alain Pacifique'>
+    <main class='works-page'>
+        <section class='page-hero'>
+            <div class='container'>
+                <h1 class='page-title fade-up'>Selected Works</h1>
+                <p class='page-subtitle fade-up'>
+                    A showcase of my recent projects and experiments.
+                </p>
+            </div>
+        </section>
+
+        <section class='works-grid-section section'>
+            <div class='container'>
+                <div class='projects-grid'>
+                    {
+                        projects.map((project) => (
+                            <a
+                                href={`/projects/${project.slug}`}
+                                class='project-card fade-up'>
+                                <div class='project-image-container'>
+                                    <img
+                                        src={project.image}
+                                        alt={project.title}
+                                        class='project-image'
+                                    />
+                                </div>
+                                <div class='project-info'>
+                                    <div class='project-header'>
+                                        <h3 class='project-title'>
+                                            {project.title}
+                                        </h3>
+                                        <span class='project-year'>
+                                            {project.year}
+                                        </span>
+                                    </div>
+                                    <p class='project-category'>
+                                        {project.category}
+                                    </p>
+                                </div>
+                            </a>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <Footer />
+    </main>
+</Layout>
+
+<style>
+    .works-page {
+        padding-top: var(--space-3xl);
+    }
+
+    .page-hero {
+        padding: var(--space-2xl) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .page-title {
+        font-size: clamp(3rem, 8vw, 6rem);
+        font-weight: 800;
+        line-height: 0.9;
+        margin-bottom: var(--space-md);
+        text-transform: uppercase;
+    }
+
+    .page-subtitle {
+        font-size: var(--text-xl);
+        color: var(--color-text-muted);
+        max-width: 600px;
+    }
+
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-2xl);
+        padding: var(--space-3xl) 0;
+    }
+
+    .project-card {
+        display: block;
+        text-decoration: none;
+        color: var(--color-text);
+        transition: transform 0.5s var(--ease-out-expo);
+    }
+
+    .project-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .project-image-container {
+        width: 100%;
+        aspect-ratio: 4/3;
+        overflow: hidden;
+        border-radius: var(--radius-sm);
+        margin-bottom: var(--space-md);
+        background: var(--color-surface);
+    }
+
+    .project-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s var(--ease-out-expo);
+    }
+
+    .project-card:hover .project-image {
+        transform: scale(1.05);
+    }
+
+    .project-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .project-title {
+        font-size: var(--text-2xl);
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .project-year {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+    }
+
+    .project-category {
+        font-size: var(--text-lg);
+        color: var(--color-text-muted);
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .projects-grid {
+            grid-template-columns: 1fr;
+            gap: var(--space-xl);
+        }
+    }
+</style>

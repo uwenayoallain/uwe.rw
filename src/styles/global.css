@@ -5,40 +5,168 @@
 @import '@fontsource/jersey-25/index.css';
 @import 'tailwindcss';
 
+@import './reset.css';
+@import './variables.css';
+
 @theme {
-  --font-family-sans: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family-display: 'Jersey 25', 'Space Grotesk', 'Inter', sans-serif;
-  --font-family-accent: 'Space Grotesk', 'Inter', sans-serif;
-  --color-brand-navy: #1B487B;
-  --color-brand-gold: #F4D619;
-  --color-brand-blush: #EACAAF;
-  --color-brand-stone: #7A7A7A;
-  --color-surface-900: #151516;
-  --color-surface-950: #0D0D0D;
+    --font-family-sans: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-family-display: 'Jersey 25', 'Space Grotesk', 'Inter', sans-serif;
+    --font-family-accent: 'Space Grotesk', 'Inter', sans-serif;
 }
 
 :root {
-  background-color: var(--color-surface-950);
-  color: #fff;
+    --color-brand-gold: #F4D619;
+    --color-brand-navy: #1B487B;
+    --color-brand-blush: #EACAAF;
 }
 
-@layer base {
-  body {
-    @apply font-sans bg-surface-950 text-white min-h-screen antialiased;
-    view-transition-name: body;
-  }
-
-  h1,
-  h2,
-  h3 {
-    @apply font-display tracking-tight;
-  }
+/* Lenis Smooth Scrolling */
+html.lenis,
+html.lenis body {
+    height: auto;
 }
 
-@utility font-display {
-  font-family: var(--font-family-display);
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
 }
 
-@utility font-accent {
-  font-family: var(--font-family-accent);
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
+/* Base Styles */
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    cursor: default;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+}
+
+::selection {
+    background-color: var(--color-brand-gold);
+    color: var(--color-brand-navy);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s var(--ease-out-expo);
+}
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+/* Typography Utilities */
+.text-display {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: var(--text-display);
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.text-giant {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: clamp(4rem, 15vw, 12rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+/* Layout Utilities */
+.grid {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.grid-1 {
+    grid-template-columns: 1fr;
+}
+
+.grid-2 {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .grid-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.section {
+    margin-bottom: var(--space-2xl);
+    position: relative;
+}
+
+/* Glassmorphism */
+.glass {
+    background: var(--color-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-glass-border);
+}
+
+/* Utility */
+.overflow-hidden {
+    overflow: hidden;
+}/* Hover Effects */
+.hover-scale {
+    transition: transform 0.3s var(--ease-out-expo);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.hover-lift {
+    transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo);
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+}
+
+.hover-glow {
+    transition: box-shadow 0.3s var(--ease-out-expo);
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px var(--color-brand-gold);
 }

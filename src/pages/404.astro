@@ -1,0 +1,132 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title='404 - Lost in the Void'>
+    <div class='error-page'>
+        <div class='content-wrapper'>
+            <h1 class='error-code font-mono' data-text='404'>404</h1>
+            <p class='message text-display'>LOST IN THE VOID</p>
+            <p class='description text-muted'>
+                The page you are looking for has drifted into the digital abyss.
+            </p>
+
+            <a href='/' class='home-btn magnetic-link'>
+                <span class='btn-text font-mono'>RETURN HOME</span>
+            </a>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .error-page {
+        height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .error-code {
+        font-size: clamp(8rem, 20vw, 15rem);
+        line-height: 0.8;
+        font-weight: 700;
+        position: relative;
+        color: var(--color-text);
+        margin-bottom: var(--space-md);
+    }
+
+    /* Glitch Effect */
+    .error-code::before,
+    .error-code::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--color-bg);
+    }
+
+    .error-code::before {
+        left: 2px;
+        text-shadow: -1px 0 var(--color-brand-gold);
+        clip: rect(24px, 550px, 90px, 0);
+        animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    }
+
+    .error-code::after {
+        left: -2px;
+        text-shadow: -1px 0 var(--color-brand-navy);
+        clip: rect(85px, 550px, 140px, 0);
+        animation: glitch-anim 2.5s infinite linear alternate-reverse;
+    }
+
+    .message {
+        font-size: clamp(2rem, 5vw, 4rem);
+        margin-bottom: var(--space-sm);
+    }
+
+    .description {
+        max-width: 40ch;
+        margin: 0 auto var(--space-xl);
+        font-size: var(--text-lg);
+    }
+
+    .home-btn {
+        display: inline-flex;
+        padding: var(--space-sm) var(--space-lg);
+        border: 1px solid var(--color-border);
+        border-radius: 100px;
+        background: rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .home-btn:hover {
+        background: var(--color-text);
+        color: var(--color-bg);
+        transform: scale(1.05);
+    }
+
+    @keyframes glitch-anim {
+        0% {
+            clip: rect(17px, 9999px, 94px, 0);
+        }
+        20% {
+            clip: rect(39px, 9999px, 82px, 0);
+        }
+        40% {
+            clip: rect(96px, 9999px, 18px, 0);
+        }
+        60% {
+            clip: rect(4px, 9999px, 75px, 0);
+        }
+        80% {
+            clip: rect(68px, 9999px, 11px, 0);
+        }
+        100% {
+            clip: rect(29px, 9999px, 56px, 0);
+        }
+    }
+
+    @keyframes glitch-anim-2 {
+        0% {
+            clip: rect(65px, 9999px, 100px, 0);
+        }
+        20% {
+            clip: rect(12px, 9999px, 5px, 0);
+        }
+        40% {
+            clip: rect(88px, 9999px, 36px, 0);
+        }
+        60% {
+            clip: rect(2px, 9999px, 85px, 0);
+        }
+        80% {
+            clip: rect(45px, 9999px, 15px, 0);
+        }
+        100% {
+            clip: rect(92px, 9999px, 63px, 0);
+        }
+    }
+</style>

@@ -1,0 +1,195 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Footer from "../../components/Footer.astro";
+
+export function getStaticPaths() {
+    const projects = [
+        {
+            title: "Project Alpha",
+            category: "Web Design & Development",
+            image: "/project_thumbnail_1.png",
+            year: "2024",
+            slug: "project-alpha",
+            description:
+                "A cutting-edge web application designed to revolutionize the way users interact with data.",
+            content:
+                "Detailed case study content goes here. This would typically include the challenge, solution, and results.",
+        },
+        {
+            title: "Neon Horizon",
+            category: "Brand Identity",
+            image: "/project_thumbnail_1.png",
+            year: "2023",
+            slug: "neon-horizon",
+            description:
+                "A bold and vibrant brand identity for a futuristic tech startup.",
+            content: "Detailed case study content goes here.",
+        },
+        {
+            title: "Quantum Flow",
+            category: "Interactive Experience",
+            image: "/project_thumbnail_1.png",
+            year: "2023",
+            slug: "quantum-flow",
+            description:
+                "An immersive digital experience that explores the boundaries of web animation.",
+            content: "Detailed case study content goes here.",
+        },
+        {
+            title: "Echo Valley",
+            category: "E-commerce",
+            image: "/project_thumbnail_1.png",
+            year: "2022",
+            slug: "echo-valley",
+            description:
+                "A seamless e-commerce platform for a sustainable fashion brand.",
+            content: "Detailed case study content goes here.",
+        },
+    ];
+
+    return projects.map((project) => ({
+        params: { slug: project.slug },
+        props: { project },
+    }));
+}
+
+const { project } = Astro.props;
+---
+
+<Layout title={`${project.title} | UWENAYO Alain Pacifique`}>
+    <main class='project-page'>
+        <div class='project-hero'>
+            <div class='container'>
+                <a href='/works' class='back-link fade-up'>← Back to Works</a>
+                <h1 class='project-title fade-up'>{project.title}</h1>
+                <div class='project-meta fade-up'>
+                    <div class='meta-item'>
+                        <span class='meta-label'>Year</span>
+                        <span class='meta-value'>{project.year}</span>
+                    </div>
+                    <div class='meta-item'>
+                        <span class='meta-label'>Category</span>
+                        <span class='meta-value'>{project.category}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='project-media section fade-up'>
+            <div class='container'>
+                <div class='hero-image-container'>
+                    <img
+                        src={project.image}
+                        alt={project.title}
+                        class='hero-image'
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class='project-content section'>
+            <div class='container'>
+                <div class='content-wrapper fade-up'>
+                    <h2 class='section-heading'>Overview</h2>
+                    <p class='text-body'>{project.description}</p>
+                    <p class='text-body'>{project.content}</p>
+                </div>
+            </div>
+        </div>
+
+        <Footer />
+    </main>
+</Layout>
+
+<style>
+    .project-page {
+        padding-top: var(--space-3xl);
+    }
+
+    .project-hero {
+        padding: var(--space-2xl) 0;
+        text-align: center;
+    }
+
+    .back-link {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        text-decoration: none;
+        margin-bottom: var(--space-xl);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .project-title {
+        font-size: clamp(3rem, 8vw, 6rem);
+        font-weight: 800;
+        line-height: 0.9;
+        margin-bottom: var(--space-xl);
+        text-transform: uppercase;
+    }
+
+    .project-meta {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-3xl);
+    }
+
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-xs);
+    }
+
+    .meta-label {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+    }
+
+    .meta-value {
+        font-size: var(--text-lg);
+        font-weight: 500;
+    }
+
+    .hero-image-container {
+        width: 100%;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+    }
+
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .content-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .section-heading {
+        font-size: var(--text-2xl);
+        font-weight: 700;
+        margin-bottom: var(--space-md);
+    }
+
+    .text-body {
+        font-size: var(--text-lg);
+        color: var(--color-text-muted);
+        line-height: 1.6;
+        margin-bottom: var(--space-md);
+    }
+
+    @media (max-width: 768px) {
+        .project-meta {
+            gap: var(--space-xl);
+        }
+    }
+</style>

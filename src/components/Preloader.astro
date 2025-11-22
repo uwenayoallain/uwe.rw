@@ -1,0 +1,97 @@
+<div class='preloader'>
+    <div class='loader-text font-mono'>
+        <span class='word'>Crafting</span>
+        <span class='word'>Digital</span>
+        <span class='word'>Experiences</span>
+    </div>
+</div>
+
+<script is:inline>
+    // Check immediately to prevent flash
+    if (sessionStorage.getItem("preloaderShown")) {
+        document.querySelector(".preloader").style.display = "none";
+    }
+</script>
+
+<script>
+    import gsap from "gsap";
+
+    document.addEventListener("astro:page-load", () => {
+        const preloader = document.querySelector(".preloader");
+
+        if (preloader) {
+            const hasShown = sessionStorage.getItem("preloaderShown");
+
+            if (!hasShown) {
+                // Prevent scrolling during preload
+                document.body.style.overflow = "hidden";
+
+                // Mark as shown for this session
+                sessionStorage.setItem("preloaderShown", "true");
+
+                const words = document.querySelectorAll(".word");
+
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        (preloader as HTMLElement).style.display = "none";
+                        document.body.style.overflow = "";
+                    },
+                });
+
+                tl.to(words, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    stagger: 0.3,
+                    ease: "power3.out",
+                })
+                    .to(words, {
+                        y: -20,
+                        opacity: 0,
+                        duration: 0.5,
+                        stagger: 0.1,
+                        ease: "power3.in",
+                        delay: 0.5,
+                    })
+                    .to(
+                        preloader,
+                        {
+                            yPercent: -100,
+                            duration: 0.8,
+                            ease: "power4.inOut",
+                        },
+                        "-=0.2",
+                    );
+            } else {
+                (preloader as HTMLElement).style.display = "none";
+            }
+        }
+    });
+</script>
+
+<style>
+    .preloader {
+        position: fixed;
+        inset: 0;
+        background-color: var(--color-bg);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .loader-text {
+        font-size: var(--text-xl);
+        color: var(--color-brand-gold);
+        font-weight: bold;
+        display: flex;
+        gap: var(--space-sm);
+        overflow: hidden;
+    }
+
+    .word {
+        opacity: 0;
+        transform: translateY(20px);
+        display: inline-block;
+    }
+</style>

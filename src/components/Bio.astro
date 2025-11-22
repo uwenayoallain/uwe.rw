@@ -1,0 +1,86 @@
+---
+
+---
+
+<section id='about' class='bio section animate-reveal'>
+    <div class='grid grid-2'>
+        <div class='bio-text'>
+            <h2 class='section-title text-muted'>About</h2>
+            <p>
+                I am a Full-Stack & Mobile Developer based in Kigali, Rwanda,
+                dedicated to building reliable and high-performance web and
+                mobile experiences. With a focus on minimalist design and robust
+                engineering, I craft digital solutions that stand out.
+            </p>
+        </div>
+        <div class='bio-stats'>
+            <h2 class='section-title text-muted'>Experience</h2>
+            <ul class='stats-list font-mono'>
+                <li>
+                    <span class='text-accent'>Full-Stack Dev</span>
+                    <span class='separator'>/</span>
+                    <span>React, Node, Astro</span>
+                </li>
+                <li>
+                    <span class='text-accent'>Mobile Dev</span>
+                    <span class='separator'>/</span>
+                    <span>Flutter, React Native</span>
+                </li>
+                <li>
+                    <span class='text-accent'>Design</span>
+                    <span class='separator'>/</span>
+                    <span>Figma, UI/UX</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style>
+    .section-title {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: var(--space-md);
+        color: var(--color-brand-gold);
+    }
+
+    .bio-text p {
+        font-size: var(--text-xl);
+        line-height: 1.4;
+        max-width: 40ch;
+        font-weight: 300;
+    }
+
+    .stats-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+
+    .stats-list li {
+        display: flex;
+        gap: var(--space-sm);
+        align-items: baseline;
+        font-size: var(--text-lg);
+        border-bottom: 1px solid var(--color-glass-border);
+        padding-bottom: var(--space-sm);
+    }
+
+    .stats-list .text-accent {
+        color: var(--color-text);
+        font-weight: 500;
+        min-width: 140px;
+    }
+
+    .separator {
+        color: var(--color-brand-gold);
+        opacity: 1;
+    }
+
+    .stats-list span:last-child {
+        color: var(--color-text-muted);
+    }
+</style>

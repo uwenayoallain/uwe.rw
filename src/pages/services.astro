@@ -1,0 +1,236 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/Footer.astro";
+
+const services = [
+    {
+        id: "01",
+        title: "Web Design",
+        description:
+            "Crafting visually stunning and user-centric interfaces that leave a lasting impression. I focus on typography, layout, and micro-interactions to create a premium feel.",
+        features: [
+            "UI/UX Design",
+            "Prototyping",
+            "Design Systems",
+            "Mobile-First Design",
+        ],
+    },
+    {
+        id: "02",
+        title: "Development",
+        description:
+            "Building robust, scalable, and high-performance websites using modern technologies. I write clean, maintainable code that stands the test of time.",
+        features: [
+            "Frontend Development",
+            "CMS Integration",
+            "Performance Optimization",
+            "SEO Best Practices",
+        ],
+    },
+    {
+        id: "03",
+        title: "Brand Identity",
+        description:
+            "Defining and elevating your brand's voice and visual language across all touchpoints. A strong brand is the foundation of a successful digital presence.",
+        features: [
+            "Logo Design",
+            "Visual Identity",
+            "Brand Guidelines",
+            "Art Direction",
+        ],
+    },
+    {
+        id: "04",
+        title: "Consulting",
+        description:
+            "Providing expert advice on digital strategy, technology stack selection, and user experience improvements to help your business grow.",
+        features: [
+            "Technical Strategy",
+            "UX Audit",
+            "Code Review",
+            "Digital Transformation",
+        ],
+    },
+];
+---
+
+<Layout title='Services | UWENAYO Alain Pacifique'>
+    <main class='services-page'>
+        <section class='page-hero'>
+            <div class='container'>
+                <h1 class='page-title fade-up'>Services</h1>
+                <p class='page-subtitle fade-up'>
+                    Comprehensive digital solutions tailored to your needs.
+                </p>
+            </div>
+        </section>
+
+        <section class='services-list-section section'>
+            <div class='container'>
+                <div class='services-list'>
+                    {
+                        services.map((service) => (
+                            <div class='service-item fade-up'>
+                                <div class='service-header'>
+                                    <span class='service-id'>{service.id}</span>
+                                    <h2 class='service-title'>
+                                        {service.title}
+                                    </h2>
+                                </div>
+                                <div class='service-body'>
+                                    <p class='service-description'>
+                                        {service.description}
+                                    </p>
+                                    <ul class='service-features'>
+                                        {service.features.map((feature) => (
+                                            <li>{feature}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <section class='cta-section section'>
+            <div class='container'>
+                <div class='cta-content fade-up'>
+                    <h2 class='cta-title'>Ready to start a project?</h2>
+                    <p class='cta-text'>
+                        Let's collaborate and build something amazing together.
+                    </p>
+                    <a href='/#contact' class='cta-button'>Get in Touch</a>
+                </div>
+            </div>
+        </section>
+
+        <Footer />
+    </main>
+</Layout>
+
+<style>
+    .services-page {
+        padding-top: var(--space-3xl);
+    }
+
+    .page-hero {
+        padding: var(--space-2xl) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .page-title {
+        font-size: clamp(3rem, 8vw, 6rem);
+        font-weight: 800;
+        line-height: 0.9;
+        margin-bottom: var(--space-md);
+        text-transform: uppercase;
+    }
+
+    .page-subtitle {
+        font-size: var(--text-xl);
+        color: var(--color-text-muted);
+        max-width: 600px;
+    }
+
+    .services-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .service-item {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: var(--space-2xl);
+        padding: var(--space-3xl) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .service-header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .service-id {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--color-text-muted);
+    }
+
+    .service-title {
+        font-size: var(--text-3xl);
+        font-weight: 700;
+    }
+
+    .service-description {
+        font-size: var(--text-lg);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-lg);
+        line-height: 1.6;
+        max-width: 600px;
+    }
+
+    .service-features {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-sm);
+        list-style: none;
+        padding: 0;
+    }
+
+    .service-features li {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--color-text);
+        display: flex;
+        align-items: center;
+    }
+
+    .service-features li::before {
+        content: "•";
+        color: var(--color-brand-gold);
+        margin-right: var(--space-xs);
+    }
+
+    .cta-section {
+        text-align: center;
+        padding: var(--space-3xl) 0;
+    }
+
+    .cta-title {
+        font-size: var(--text-4xl);
+        font-weight: 700;
+        margin-bottom: var(--space-md);
+    }
+
+    .cta-text {
+        font-size: var(--text-xl);
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-xl);
+    }
+
+    .cta-button {
+        display: inline-block;
+        padding: var(--space-md) var(--space-xl);
+        background: var(--color-text);
+        color: var(--color-bg);
+        font-size: var(--text-lg);
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 100px;
+        transition: transform 0.3s ease;
+    }
+
+    .cta-button:hover {
+        transform: translateY(-5px);
+    }
+
+    @media (max-width: 768px) {
+        .service-item {
+            grid-template-columns: 1fr;
+            gap: var(--space-lg);
+        }
+    }
+</style>

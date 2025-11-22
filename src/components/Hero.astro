@@ -1,0 +1,257 @@
+---
+const profileImage = "/uwe.png";
+---
+
+<section class='hero section'>
+    <div class='hero-background'>
+        <div class='gradient-orb gold'></div>
+        <div class='gradient-orb blue'></div>
+    </div>
+
+    <div class='hero-content'>
+        <div class='hero-header'>
+            <span class='role font-mono text-muted'>Software Developer</span>
+            <span class='location font-mono text-muted'>Kigali, Rwanda</span>
+        </div>
+
+        <h1 class='name text-giant'>
+            UWENAYO<br />
+            <span class='indent'>ALAIN</span>
+        </h1>
+
+        <div class='hero-footer'>
+            <p class='intro text-xl text-muted'>
+                Crafting digital experiences with precision, passion, and a
+                touch of chaos.
+            </p>
+            <div class='hero-image-wrapper glass'>
+                <img
+                    src={profileImage}
+                    alt='UWENAYO Alain Pacifique'
+                    class='profile-image'
+                />
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("astro:page-load", () => {
+        // Simple fade in for hero elements
+        gsap.from(".hero-content > *", {
+            y: 30,
+            opacity: 0,
+            duration: 1.5,
+            stagger: 0.2,
+            ease: "power3.out",
+            delay: 0.5
+        });
+    });
+</script>
+
+<style>
+  .hero {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--space-3xl);
+  }
+
+  .hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.4;
+    animation: float 10s infinite ease-in-out;
+  }
+
+  .gradient-orb.gold {
+    top: 10%;
+    right: 5%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(244, 214, 25, 0.15) 0%, rgba(0,0,0,0) 70%);
+    animation-delay: 0s;
+  }
+
+  .gradient-orb.blue {
+    bottom: 10%;
+    left: 5%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(27, 72, 123, 0.15) 0%, rgba(0,0,0,0) 70%);
+    animation-delay: -5s;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding-bottom: var(--space-xl);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .hero-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 var(--space-md);
+  }
+
+  .name {
+    font-size: clamp(5rem, 18vw, 16rem);
+    font-weight: 800;
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    margin: 0;
+    text-transform: uppercase;
+    mix-blend-mode: difference;
+    color: var(--color-text);
+    margin-left: -0.05em; /* Optical alignment */
+    text-align: center; /* Centered for impact */
+  }
+  
+  .indent {
+      display: block;
+      color: var(--color-brand-gold); /* Gold accent for last name */
+  }
+
+  .hero-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: var(--space-3xl);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-md);
+  }
+
+  .role {
+    font-size: var(--text-lg);
+    font-weight: 500;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .location {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(0, 40px); }
+  }
+
+  @media (max-width: 768px) {
+    .name {
+        animation: slide-up 1.2s var(--ease-out-expo) forwards;
+        animation-delay: 0.4s;
+    }
+
+    .indent {
+        margin-left: 15vw;
+        color: var(--color-brand-gold);
+        display: block;
+    }
+
+    .hero-footer {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+        align-items: end;
+        opacity: 0;
+        animation: fade-in 1s var(--ease-out-expo) forwards;
+        animation-delay: 0.8s;
+    }
+
+    @media (min-width: 768px) {
+        .hero-footer {
+            grid-template-columns: 1fr 300px;
+        }
+    }
+
+    .intro {
+        max-width: 35ch;
+        line-height: 1.4;
+        font-size: var(--text-lg);
+    }
+
+    .hero-image-wrapper {
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        aspect-ratio: 1;
+        opacity: 0;
+        animation: scale-in 1.2s var(--ease-out-expo) forwards;
+        animation-delay: 1s;
+    }
+
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 1.5s var(--ease-out-expo);
+    }
+
+    .hero-image-wrapper:hover .profile-image {
+        transform: scale(1.1);
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-up {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes scale-in {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+</style>
