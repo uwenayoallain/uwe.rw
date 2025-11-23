@@ -27,37 +27,38 @@ const services = [
 ];
 ---
 
-<section id='services' class='section services'>
-    <div class='container'>
-        <div class='section-header fade-up'>
-            <h2 class='section-title'>Services</h2>
-            <p class='section-subtitle'>How I can help you</p>
+<section id="services" class="section services">
+    <div class="container">
+        <div class="section-header fade-up">
+            <h2 class="section-title">Services</h2>
+            <p class="section-subtitle">How I can help you</p>
         </div>
 
-        <div class='services-list'>
+        <div class="services-list">
             {
                 services.map((service) => (
-                    <div class='service-item fade-up'>
-                        <div class='service-id'>{service.id}</div>
-                        <div class='service-content'>
-                            <h3 class='service-title'>{service.title}</h3>
-                            <p class='service-description'>
+                    <div class="service-item fade-up">
+                        <div class="service-id">{service.id}</div>
+                        <div class="service-content">
+                            <h3 class="service-title">{service.title}</h3>
+                            <p class="service-description">
                                 {service.description}
                             </p>
                         </div>
-                        <div class='service-icon'>
+                        <div class="service-icon">
                             <svg
-                                width='24'
-                                height='24'
-                                viewBox='0 0 24 24'
-                                fill='none'
-                                xmlns='http://www.w3.org/2000/svg'>
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
                                 <path
-                                    d='M7 17L17 7M17 7H7M17 7V17'
-                                    stroke='currentColor'
-                                    stroke-width='2'
-                                    stroke-linecap='round'
-                                    stroke-linejoin='round'
+                                    d="M7 17L17 7M17 7H7M17 7V17"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
                                 />
                             </svg>
                         </div>
@@ -67,6 +68,36 @@ const services = [
         </div>
     </div>
 </section>
+
+<script>
+    import gsap from "gsap";
+
+    document.addEventListener("astro:page-load", () => {
+        const items = document.querySelectorAll(".service-item");
+
+        items.forEach((item) => {
+            const icon = item.querySelector(".service-icon");
+
+            item.addEventListener("mouseenter", () => {
+                gsap.to(icon, {
+                    x: 0,
+                    opacity: 1,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+
+            item.addEventListener("mouseleave", () => {
+                gsap.to(icon, {
+                    x: -10,
+                    opacity: 0,
+                    duration: 0.2,
+                    ease: "power2.in",
+                });
+            });
+        });
+    });
+</script>
 
 <style>
     .services {

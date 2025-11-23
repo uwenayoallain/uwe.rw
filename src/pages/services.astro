@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Footer from "../components/Footer.astro";
 
 const services = [
     {
@@ -54,34 +53,34 @@ const services = [
 ];
 ---
 
-<Layout title='Services | UWENAYO Alain Pacifique'>
-    <main class='services-page'>
-        <section class='page-hero'>
-            <div class='container'>
-                <h1 class='page-title fade-up'>Services</h1>
-                <p class='page-subtitle fade-up'>
+<Layout title="Services | UWENAYO Alain Pacifique">
+    <main class="services-page">
+        <section class="page-hero">
+            <div class="container">
+                <h1 class="page-title fade-up">Services</h1>
+                <p class="page-subtitle fade-up">
                     Comprehensive digital solutions tailored to your needs.
                 </p>
             </div>
         </section>
 
-        <section class='services-list-section section'>
-            <div class='container'>
-                <div class='services-list'>
+        <section class="services-list-section section">
+            <div class="container">
+                <div class="services-list">
                     {
                         services.map((service) => (
-                            <div class='service-item fade-up'>
-                                <div class='service-header'>
-                                    <span class='service-id'>{service.id}</span>
-                                    <h2 class='service-title'>
+                            <div class="service-item fade-up">
+                                <div class="service-header">
+                                    <span class="service-id">{service.id}</span>
+                                    <h2 class="service-title">
                                         {service.title}
                                     </h2>
                                 </div>
-                                <div class='service-body'>
-                                    <p class='service-description'>
+                                <div class="service-body">
+                                    <p class="service-description">
                                         {service.description}
                                     </p>
-                                    <ul class='service-features'>
+                                    <ul class="service-features">
                                         {service.features.map((feature) => (
                                             <li>{feature}</li>
                                         ))}
@@ -93,20 +92,6 @@ const services = [
                 </div>
             </div>
         </section>
-
-        <section class='cta-section section'>
-            <div class='container'>
-                <div class='cta-content fade-up'>
-                    <h2 class='cta-title'>Ready to start a project?</h2>
-                    <p class='cta-text'>
-                        Let's collaborate and build something amazing together.
-                    </p>
-                    <a href='/#contact' class='cta-button'>Get in Touch</a>
-                </div>
-            </div>
-        </section>
-
-        <Footer />
     </main>
 </Layout>
 
@@ -116,7 +101,7 @@ const services = [
     }
 
     .page-hero {
-        padding: var(--space-2xl) 0;
+        padding: var(--space-lg) 0;
         border-bottom: 1px solid var(--color-border);
     }
 

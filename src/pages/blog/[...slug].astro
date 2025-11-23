@@ -16,17 +16,17 @@ const { Content } = await post.render();
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
-    <div class='progress-container'>
-        <div class='progress-bar'></div>
+    <div class="progress-container">
+        <div class="progress-bar"></div>
     </div>
 
-    <article class='blog-post section'>
-        <div class='post-header'>
-            <a href='/' class='back-link font-mono text-muted'>
-                <span class='arrow'>&larr;</span> Back to Home
+    <article class="blog-post section">
+        <div class="post-header">
+            <a href="/" class="back-link font-mono text-muted">
+                <span class="arrow">&larr;</span> Back to Home
             </a>
-            <div class='meta font-mono text-muted'>
-                <span class='date'>
+            <div class="meta font-mono text-muted">
+                <span class="date">
                     {
                         post.data.pubDate.toLocaleDateString("en-US", {
                             year: "numeric",
@@ -35,27 +35,27 @@ const { Content } = await post.render();
                         })
                     }
                 </span>
-                <span class='separator'>/</span>
-                <span class='tag'>{post.data.tags[0]}</span>
+                <span class="separator">/</span>
+                <span class="tag">{post.data.tags[0]}</span>
             </div>
-            <h1 class='title text-display split-text'>{post.data.title}</h1>
+            <h1 class="title text-display split-text">{post.data.title}</h1>
         </div>
 
         {
             post.data.heroImage && (
-                <div class='hero-image-wrapper'>
+                <div class="hero-image-wrapper">
                     <img
                         src={post.data.heroImage}
                         alt={post.data.title}
-                        class='hero-image'
-                        data-speed='0.5'
+                        class="hero-image"
+                        data-speed="0.5"
                     />
                 </div>
             )
         }
 
-        <div class='content-wrapper'>
-            <div class='content'>
+        <div class="content-wrapper">
+            <div class="content">
                 <Content />
             </div>
         </div>
@@ -210,10 +210,8 @@ const { Content } = await post.render();
         overflow: hidden;
         aspect-ratio: 21/9;
         position: relative;
-        width: 100vw;
-        margin-left: 50%;
-        transform: translateX(-50%);
-        max-width: 1400px;
+        width: 100%;
+        max-width: 900px;
     }
 
     .hero-image {

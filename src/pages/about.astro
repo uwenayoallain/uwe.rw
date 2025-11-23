@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Footer from "../components/Footer.astro";
 
 const stats = [
     { number: "3+", label: "Years Experience" },
@@ -10,61 +9,61 @@ const stats = [
 ];
 ---
 
-<Layout title='About | UWENAYO Alain Pacifique'>
-    <main class='about-page'>
-        <section class='page-hero'>
-            <div class='container'>
-                <h1 class='page-title fade-up'>About Me</h1>
-                <p class='page-subtitle fade-up'>
+<Layout title="About | UWENAYO Alain Pacifique">
+    <main class="about-page">
+        <section class="page-hero">
+            <div class="container">
+                <h1 class="page-title fade-up">About Me</h1>
+                <p class="page-subtitle fade-up">
                     Designer, Developer, and Creative Thinker.
                 </p>
             </div>
         </section>
 
-        <section class='bio-section section'>
-            <div class='container'>
-                <div class='bio-grid'>
-                    <div class='bio-content fade-up'>
-                        <h2 class='section-heading'>
+        <section class="bio-section section">
+            <div class="container">
+                <div class="bio-grid">
+                    <div class="bio-content fade-up">
+                        <h2 class="section-heading">
                             The Person Behind the Pixels
                         </h2>
-                        <p class='text-body'>
+                        <p class="text-body">
                             I'm Alain, a software developer based in Kigali,
                             Rwanda. I specialize in building digital experiences
                             that are not only visually stunning but also highly
                             functional and performant.
                         </p>
-                        <p class='text-body'>
+                        <p class="text-body">
                             My journey started with a curiosity for how things
                             work on the web. Over the years, that curiosity has
                             evolved into a passion for crafting pixel-perfect
                             interfaces and robust backend systems. I believe
                             that good design is invisible—it just works.
                         </p>
-                        <p class='text-body'>
+                        <p class="text-body">
                             When I'm not coding, you can find me exploring new
                             technologies, contributing to open-source projects,
                             or seeking inspiration in the world around me.
                         </p>
                     </div>
-                    <div class='bio-image fade-up'>
-                        <div class='image-placeholder glass'>
+                    <div class="bio-image fade-up">
+                        <div class="image-placeholder glass">
                             <!-- Replace with actual image -->
-                            <div class='placeholder-text'>Image</div>
+                            <div class="placeholder-text">Image</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class='stats-section section'>
-            <div class='container'>
-                <div class='stats-grid'>
+        <section class="stats-section section">
+            <div class="container">
+                <div class="stats-grid">
                     {
                         stats.map((stat) => (
-                            <div class='stat-item fade-up'>
-                                <span class='stat-number'>{stat.number}</span>
-                                <span class='stat-label'>{stat.label}</span>
+                            <div class="stat-item fade-up">
+                                <span class="stat-number">{stat.number}</span>
+                                <span class="stat-label">{stat.label}</span>
                             </div>
                         ))
                     }
@@ -72,11 +71,11 @@ const stats = [
             </div>
         </section>
 
-        <section class='philosophy-section section'>
-            <div class='container'>
-                <div class='philosophy-content fade-up'>
-                    <h2 class='section-heading'>My Philosophy</h2>
-                    <blockquote class='philosophy-quote'>
+        <section class="philosophy-section section">
+            <div class="container">
+                <div class="philosophy-content fade-up">
+                    <h2 class="section-heading">My Philosophy</h2>
+                    <blockquote class="philosophy-quote">
                         "Simplicity is the ultimate sophistication. I strive to
                         create designs that are clean, intuitive, and
                         impactful."
@@ -84,8 +83,6 @@ const stats = [
                 </div>
             </div>
         </section>
-
-        <Footer />
     </main>
 </Layout>
 
@@ -95,7 +92,7 @@ const stats = [
     }
 
     .page-hero {
-        padding: var(--space-2xl) 0;
+        padding: var(--space-lg) 0;
         border-bottom: 1px solid var(--color-border);
     }
 

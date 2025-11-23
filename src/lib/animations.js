@@ -130,11 +130,12 @@ export function animateHeroText(selector) {
         element.split = text; // Store reference
 
         gsap.from(text.chars, {
-            yPercent: 130,
-            stagger: 0.05,
-            duration: 1.2,
-            ease: 'power4.out',
-            delay: 0.2
+            y: 80,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.01,
+            delay: 0.1,
+            ease: "expo.out"
         });
     }
 }

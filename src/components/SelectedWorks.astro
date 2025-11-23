@@ -29,34 +29,35 @@ const projects = [
 ];
 ---
 
-<section id='works' class='section selected-works'>
-    <div class='container'>
-        <div class='section-header fade-up'>
-            <h2 class='section-title'>Selected Works</h2>
-            <a href='/works' class='view-all-link magnetic-link'
+<section id="works" class="section selected-works">
+    <div class="container">
+        <div class="section-header fade-up">
+            <h2 class="section-title">Selected Works</h2>
+            <a href="/works" class="view-all-link magnetic-link"
                 >View All Projects</a
             >
         </div>
 
-        <div class='projects-grid'>
+        <div class="projects-grid">
             {
                 projects.map((project, index) => (
-                    <a
-                        href={`/projects/${project.slug}`}
-                        class='project-card fade-up'>
-                        <div class='project-image-container'>
+                    <a href={`/projects/${project.slug}`} class="project-card">
+                        <div class="project-image-container">
                             <img
                                 src={project.image}
                                 alt={project.title}
-                                class='project-image'
+                                class="project-image"
                             />
-                        </div>
-                        <div class='project-info'>
-                            <div class='project-header'>
-                                <h3 class='project-title'>{project.title}</h3>
-                                <span class='project-year'>{project.year}</span>
+                            <div class="project-overlay">
+                                <span class="view-project">View Project</span>
                             </div>
-                            <p class='project-category'>{project.category}</p>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-header">
+                                <h3 class="project-title">{project.title}</h3>
+                                <span class="project-year">{project.year}</span>
+                            </div>
+                            <p class="project-category">{project.category}</p>
                         </div>
                     </a>
                 ))
@@ -64,6 +65,32 @@ const projects = [
         </div>
     </div>
 </section>
+
+<script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("astro:page-load", () => {
+        const cards = document.querySelectorAll(".project-card");
+
+        cards.forEach((card, i) => {
+            gsap.from(card, {
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 90%",
+                    toggleActions: "play none none reverse",
+                },
+                delay: (i % 2) * 0.1,
+            });
+        });
+    });
+</script>
 
 <style>
     .selected-works {
@@ -126,6 +153,7 @@ const projects = [
         border-radius: var(--radius-sm);
         margin-bottom: var(--space-md);
         background: var(--color-surface);
+        position: relative;
     }
 
     .project-image {
@@ -133,6 +161,40 @@ const projects = [
         height: 100%;
         object-fit: cover;
         transition: transform 0.7s var(--ease-out-expo);
+    }
+
+    .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .view-project {
+        color: #fff;
+        font-size: var(--text-lg);
+        font-weight: 500;
+        padding: var(--space-sm) var(--space-md);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 100px;
+        backdrop-filter: blur(4px);
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+    }
+
+    .project-card:hover .project-overlay {
+        opacity: 1;
+    }
+
+    .project-card:hover .view-project {
+        transform: translateY(0);
     }
 
     .project-card:hover .project-image {

@@ -5,6 +5,7 @@ import Preloader from "../components/Preloader.astro";
 import Cursor from "../components/Cursor.astro";
 import GridBackground from "../components/GridBackground.astro";
 import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
     title: string;
@@ -16,26 +17,27 @@ const { title, description = "UWENAYO Alain Pacifique - Software Developer" } =
 ---
 
 <!doctype html>
-<html lang='en'>
+<html lang="en">
     <head>
-        <meta charset='UTF-8' />
-        <meta name='description' content={description} />
-        <meta name='viewport' content='width=device-width' />
-        <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-        <meta name='generator' content={Astro.generator} />
+        <meta charset="UTF-8" />
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
         <ClientRouter />
     </head>
     <body>
-        <div class='noise-overlay'></div>
+        <div class="noise-overlay"></div>
         <GridBackground />
         <Navbar />
         <Preloader />
         <Cursor />
-        <div class='container'>
+        <div class="container">
             <slot />
         </div>
-        <script type='module'>
+        <Footer />
+        <script>
             import { initAnimations } from "../lib/animations.js";
 
             // Run on initial load

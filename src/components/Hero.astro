@@ -2,34 +2,86 @@
 const profileImage = "/uwe.png";
 ---
 
-<section class='hero section'>
-    <div class='hero-background'>
-        <div class='gradient-orb gold'></div>
-        <div class='gradient-orb blue'></div>
+<section class="hero section">
+    <div class="hero-background">
+        <div class="gradient-orb gold"></div>
+        <div class="gradient-orb blue"></div>
     </div>
 
-    <div class='hero-content'>
-        <div class='hero-header'>
-            <span class='role font-mono text-muted'>Software Developer</span>
-            <span class='location font-mono text-muted'>Kigali, Rwanda</span>
+    <div class="hero-content">
+        <div class="hero-header">
+            <span class="role font-mono text-muted">Software Developer</span>
+
+            <button
+                id="cursor-toggle"
+                class="cursor-toggle"
+                aria-label="Toggle Cursor"
+            >
+                <span class="cursor-label">Enable Cursor</span>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="cursor-icon"
+                >
+                    <path
+                        d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"
+                    ></path>
+                    <circle cx="12" cy="13" r="3"></circle>
+                </svg>
+            </button>
+
+            <div class="location-wrapper font-mono text-muted">
+                <span class="location">Kigali, Rwanda</span>
+                <span class="separator">—</span>
+                <span class="time" id="local-time">--:-- PM</span>
+            </div>
         </div>
 
-        <h1 class='name text-giant'>
+        <h1 class="name text-giant">
             UWENAYO<br />
-            <span class='indent'>ALAIN</span>
+            <span class="indent">ALAIN PACIFIQUE</span>
         </h1>
 
-        <div class='hero-footer'>
-            <p class='intro text-xl text-muted'>
-                Crafting digital experiences with precision, passion, and a
-                touch of chaos.
-            </p>
-            <div class='hero-image-wrapper glass'>
-                <img
-                    src={profileImage}
-                    alt='UWENAYO Alain Pacifique'
-                    class='profile-image'
-                />
+        <div class="hero-footer">
+            <div class="hero-footer-content">
+                <div class="intro-wrapper">
+                    <p class="intro-headline text-xl">
+                        Crafting digital experiences with precision and passion.
+                    </p>
+                    <p class="intro-subtext text-muted">
+                        Specializing in building exceptional digital products,
+                        brands, and experiences.
+                    </p>
+                </div>
+            </div>
+
+            <div class="hero-image-container">
+                <div class="hero-image-wrapper glass magnetic-item">
+                    <div class="rgb-shift-container">
+                        <img
+                            src={profileImage}
+                            alt="UWENAYO Alain Pacifique"
+                            class="profile-image rgb-layer layer-r"
+                        />
+                        <img
+                            src={profileImage}
+                            alt="UWENAYO Alain Pacifique"
+                            class="profile-image rgb-layer layer-g"
+                        />
+                        <img
+                            src={profileImage}
+                            alt="UWENAYO Alain Pacifique"
+                            class="profile-image rgb-layer layer-b"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -38,220 +90,511 @@ const profileImage = "/uwe.png";
 <script>
     import gsap from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import SplitType from "split-type";
 
     gsap.registerPlugin(ScrollTrigger);
 
+    // Live Clock Function
+    function updateTime() {
+        const timeElement = document.getElementById("local-time");
+        if (timeElement) {
+            const options: Intl.DateTimeFormatOptions = {
+                timeZone: "Africa/Kigali",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+            };
+            const timeString = new Date().toLocaleTimeString("en-US", options);
+            timeElement.textContent = timeString;
+        }
+    }
+
     document.addEventListener("astro:page-load", () => {
-        // Simple fade in for hero elements
-        gsap.from(".hero-content > *", {
-            y: 30,
-            opacity: 0,
-            duration: 1.5,
-            stagger: 0.2,
-            ease: "power3.out",
-            delay: 0.5
+        // Start Clock
+        updateTime();
+        const timeInterval = setInterval(updateTime, 1000);
+
+        // Ensure fonts are loaded before splitting
+        document.fonts.ready.then(() => {
+            const title = new SplitType(".name", {
+                types: "chars,words",
+            });
+            const role = new SplitType(".role", {
+                types: "chars,words",
+            });
+            const introHeadline = new SplitType(".intro-headline", {
+                types: "lines,words",
+            });
+
+            const tl = gsap.timeline({
+                defaults: { ease: "expo.out" },
+            });
+
+            // Initial reveal
+            tl.from(title.chars, {
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.02,
+                delay: 0.1,
+            })
+                .from(
+                    role.chars,
+                    {
+                        y: 20,
+                        opacity: 0,
+                        duration: 0.8,
+                        stagger: 0.01,
+                    },
+                    "-=0.8",
+                )
+                .from(
+                    ".location-wrapper",
+                    {
+                        x: -20,
+                        opacity: 0,
+                        duration: 0.8,
+                    },
+                    "-=0.6",
+                )
+                .from(
+                    introHeadline.words,
+                    {
+                        y: 20,
+                        opacity: 0,
+                        duration: 0.8,
+                        stagger: 0.02,
+                    },
+                    "-=0.7",
+                )
+                .from(
+                    ".intro-subtext",
+                    {
+                        y: 20,
+                        opacity: 0,
+                        duration: 0.8,
+                    },
+                    "-=0.6",
+                )
+                .from(
+                    ".hero-image-wrapper",
+                    {
+                        clipPath: "inset(100% 0% 0% 0%)",
+                        scale: 1.2,
+                        duration: 1.5,
+                        ease: "power4.out",
+                    },
+                    "-=1.0",
+                )
+                .from(
+                    ".rgb-layer",
+                    {
+                        scale: 1.4,
+                        duration: 1.5,
+                        ease: "power4.out",
+                    },
+                    "<",
+                );
+
+            // Parallax effect
+            gsap.to(".hero-background", {
+                yPercent: 20,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true,
+                },
+            });
+
+            gsap.to(".name", {
+                yPercent: 30,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true,
+                },
+            });
+
+            // Magnetic & RGB Shift Effect
+            const magneticItem = document.querySelector(
+                ".magnetic-item",
+            ) as HTMLElement;
+            const layers = document.querySelectorAll(".rgb-layer");
+
+            if (magneticItem && layers.length === 3) {
+                magneticItem.addEventListener("mousemove", (e) => {
+                    const { left, top, width, height } =
+                        magneticItem.getBoundingClientRect();
+                    const x = e.clientX - left - width / 2;
+                    const y = e.clientY - top - height / 2;
+
+                    // Move container
+                    gsap.to(magneticItem, {
+                        x: x * 0.2,
+                        y: y * 0.2,
+                        duration: 0.5,
+                        ease: "power2.out",
+                    });
+
+                    // RGB Shift - separate layers based on movement
+                    // Red layer
+                    gsap.to(layers[0], {
+                        x: x * 0.05,
+                        y: y * 0.05,
+                        duration: 0.4,
+                        ease: "power2.out",
+                    });
+
+                    // Green layer (Anchor)
+                    gsap.to(layers[1], {
+                        x: 0,
+                        y: 0,
+                        duration: 0.4,
+                        ease: "power2.out",
+                    });
+
+                    // Blue layer
+                    gsap.to(layers[2], {
+                        x: x * -0.05,
+                        y: y * -0.05,
+                        duration: 0.4,
+                        ease: "power2.out",
+                    });
+                });
+
+                magneticItem.addEventListener("mouseleave", () => {
+                    gsap.to([magneticItem, ...layers], {
+                        x: 0,
+                        y: 0,
+                        duration: 0.8,
+                        ease: "elastic.out(1, 0.3)",
+                    });
+                });
+            }
         });
+
+        // Cleanup interval on page unload (optional but good practice)
+        return () => clearInterval(timeInterval);
     });
 </script>
 
 <style>
-  .hero {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    padding-top: var(--space-3xl);
-  }
+    .hero {
+        min-height: 100vh;
+        height: auto;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        padding-top: var(--space-xl);
+    }
 
-  .hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-  }
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
 
-  .gradient-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.4;
-    animation: float 10s infinite ease-in-out;
-  }
+    .gradient-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.4;
+        animation: float 10s infinite ease-in-out;
+    }
 
-  .gradient-orb.gold {
-    top: 10%;
-    right: 5%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(244, 214, 25, 0.15) 0%, rgba(0,0,0,0) 70%);
-    animation-delay: 0s;
-  }
+    .gradient-orb.gold {
+        top: 10%;
+        right: 5%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+            circle,
+            rgba(244, 214, 25, 0.15) 0%,
+            rgba(0, 0, 0, 0) 70%
+        );
+        animation-delay: 0s;
+    }
 
-  .gradient-orb.blue {
-    bottom: 10%;
-    left: 5%;
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(27, 72, 123, 0.15) 0%, rgba(0,0,0,0) 70%);
-    animation-delay: -5s;
-  }
+    .gradient-orb.blue {
+        bottom: 10%;
+        left: 5%;
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(
+            circle,
+            rgba(27, 72, 123, 0.15) 0%,
+            rgba(0, 0, 0, 0) 70%
+        );
+        animation-delay: -5s;
+    }
 
-  .hero-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    padding-bottom: var(--space-xl);
-    position: relative;
-    z-index: 2;
-    width: 100%;
-  }
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        padding-bottom: var(--space-xl);
+        position: relative;
+        z-index: 2;
+        width: 100%;
+    }
 
-  .hero-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 var(--space-md);
-  }
+    .hero-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 var(--space-md);
+        margin-bottom: var(--space-lg);
+    }
 
-  .name {
-    font-size: clamp(5rem, 18vw, 16rem);
-    font-weight: 800;
-    line-height: 0.8;
-    letter-spacing: -0.05em;
-    margin: 0;
-    text-transform: uppercase;
-    mix-blend-mode: difference;
-    color: var(--color-text);
-    margin-left: -0.05em; /* Optical alignment */
-    text-align: center; /* Centered for impact */
-  }
-  
-  .indent {
-      display: block;
-      color: var(--color-brand-gold); /* Gold accent for last name */
-  }
-
-  .hero-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-top: var(--space-3xl);
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-md);
-  }
-
-  .role {
-    font-size: var(--text-lg);
-    font-weight: 500;
-    color: var(--color-text);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .location {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    letter-spacing: 0.1em;
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(0, 40px); }
-  }
-
-  @media (max-width: 768px) {
     .name {
-        animation: slide-up 1.2s var(--ease-out-expo) forwards;
-        animation-delay: 0.4s;
+        font-size: clamp(5rem, 18vw, 16rem);
+        font-weight: 800;
+        line-height: 0.8;
+        letter-spacing: -0.05em;
+        margin: 0;
+        text-transform: uppercase;
+        mix-blend-mode: difference;
+        color: var(--color-text);
+        margin-left: -0.05em; /* Optical alignment */
+        text-align: center; /* Centered for impact */
     }
 
     .indent {
-        margin-left: 15vw;
-        color: var(--color-brand-gold);
         display: block;
+        color: var(--color-brand-gold); /* Gold accent for last name */
     }
 
     .hero-footer {
         display: grid;
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
-        align-items: end;
-        opacity: 0;
-        animation: fade-in 1s var(--ease-out-expo) forwards;
-        animation-delay: 0.8s;
+        grid-template-columns: 1fr 300px;
+        gap: var(--space-2xl);
+        align-items: flex-end;
+        margin-top: var(--space-2xl);
+        border-top: 1px solid var(--color-border);
+        padding-top: var(--space-lg);
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
     }
 
-    @media (min-width: 768px) {
-        .hero-footer {
-            grid-template-columns: 1fr 300px;
-        }
+    .hero-footer-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+        max-width: 600px;
     }
 
-    .intro {
-        max-width: 35ch;
-        line-height: 1.4;
-        font-size: var(--text-lg);
+    .intro-headline {
+        font-size: var(--text-xl);
+        font-weight: 400;
+        line-height: 1.2;
+        margin-bottom: var(--space-sm);
+        color: var(--color-text);
+    }
+
+    .intro-subtext {
+        font-size: var(--text-base);
+        color: var(--color-text-muted);
+        max-width: 40ch;
+    }
+
+    .hero-image-container {
+        display: flex;
+        justify-content: flex-end;
     }
 
     .hero-image-wrapper {
-        border-radius: var(--radius-sm);
-        overflow: hidden;
+        width: 100%;
         aspect-ratio: 1;
-        opacity: 0;
-        animation: scale-in 1.2s var(--ease-out-expo) forwards;
-        animation-delay: 1s;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+
+    /* RGB Shift Styles */
+    .rgb-shift-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .rgb-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        mix-blend-mode: screen;
+        transition: transform 0.1s ease-out; /* Smooth follow */
+    }
+
+    .layer-r {
+        opacity: 1;
+    }
+    .layer-g {
+        opacity: 1;
+        mix-blend-mode: normal;
+    } /* Base layer */
+    .layer-b {
+        opacity: 1;
+    }
+
+    /* Hide other layers if not supported or needed, but here we want them visible */
+
+    .magnetic-item {
+        will-change: transform;
     }
 
     .profile-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 1.5s var(--ease-out-expo);
+        /* transition: transform 0.7s var(--ease-out-expo); */ /* Removed for RGB shift */
     }
 
-    .hero-image-wrapper:hover .profile-image {
-        transform: scale(1.1);
+    /* .hero-image-wrapper:hover .profile-image {
+      transform: scale(1.1);
+  } */ /* Removed for RGB shift */
+
+    .role {
+        font-size: var(--text-lg);
+        font-weight: 500;
+        color: var(--color-text);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
-    @keyframes fade-in {
-        from {
-            opacity: 0;
+    .location-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: var(--text-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .separator {
+        opacity: 0.3;
+    }
+
+    .time {
+        color: var(--color-text);
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* Cursor Toggle in Hero */
+    .cursor-toggle {
+        background: transparent;
+        border: 1px solid var(--color-border);
+        color: var(--color-text-muted);
+        padding: 8px 16px;
+        border-radius: 100px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: all 0.3s ease;
+    }
+
+    .cursor-toggle:hover {
+        background: var(--color-text);
+        color: var(--color-bg);
+        border-color: var(--color-text);
+    }
+
+    .cursor-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translate(0, 0);
         }
-        to {
-            opacity: 1;
+        50% {
+            transform: translate(0, 40px);
         }
     }
 
-    @keyframes slide-up {
-        from {
-            opacity: 0;
-            transform: translateY(50px);
+    @media (max-width: 768px) {
+        .name {
+            animation: slide-up 1.2s var(--ease-out-expo) forwards;
+            animation-delay: 0.4s;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
 
-    @keyframes scale-in {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
+        .indent {
+            margin-left: 15vw;
+            color: var(--color-brand-gold);
+            display: block;
         }
-        to {
-            opacity: 1;
-            transform: scale(1);
+
+        .hero-footer {
+            grid-template-columns: 1fr;
+            gap: var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+
+        .hero-footer-content {
+            order: 2;
+        }
+
+        .hero-image-container {
+            order: 1;
+            justify-content: flex-start;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .intro-headline {
+            font-size: var(--text-lg);
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scale-in {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
     }
 </style>

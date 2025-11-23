@@ -1,6 +1,5 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import Footer from "../../components/Footer.astro";
 import { getCollection } from "astro:content";
 
 const posts = (await getCollection("posts")).sort(
@@ -8,37 +7,38 @@ const posts = (await getCollection("posts")).sort(
 );
 ---
 
-<Layout title='Blog | UWENAYO Alain Pacifique'>
-    <main class='blog-page'>
-        <section class='page-hero'>
-            <div class='container'>
-                <h1 class='page-title fade-up'>Thoughts</h1>
-                <p class='page-subtitle fade-up'>
+<Layout title="Blog | UWENAYO Alain Pacifique">
+    <main class="blog-page">
+        <section class="page-hero">
+            <div class="container">
+                <h1 class="page-title fade-up">Thoughts</h1>
+                <p class="page-subtitle fade-up">
                     Insights on design, development, and technology.
                 </p>
             </div>
         </section>
 
-        <section class='blog-list-section section'>
-            <div class='container'>
-                <div class='blog-grid'>
+        <section class="blog-list-section section">
+            <div class="container">
+                <div class="blog-grid">
                     {
                         posts.map((post) => (
                             <a
                                 href={`/blog/${post.slug}/`}
-                                class='blog-card fade-up'>
-                                <div class='blog-image-container'>
+                                class="blog-card fade-up"
+                            >
+                                <div class="blog-image-container">
                                     {post.data.heroImage && (
                                         <img
                                             src={post.data.heroImage}
                                             alt={post.data.title}
-                                            class='blog-image'
+                                            class="blog-image"
                                         />
                                     )}
                                 </div>
-                                <div class='blog-content'>
-                                    <div class='blog-meta'>
-                                        <span class='blog-date'>
+                                <div class="blog-content">
+                                    <div class="blog-meta">
+                                        <span class="blog-date">
                                             {post.data.pubDate.toLocaleDateString(
                                                 "en-US",
                                                 {
@@ -48,14 +48,14 @@ const posts = (await getCollection("posts")).sort(
                                                 },
                                             )}
                                         </span>
-                                        <span class='blog-tag'>
+                                        <span class="blog-tag">
                                             {post.data.tags[0]}
                                         </span>
                                     </div>
-                                    <h2 class='blog-title'>
+                                    <h2 class="blog-title">
                                         {post.data.title}
                                     </h2>
-                                    <p class='blog-description'>
+                                    <p class="blog-description">
                                         {post.data.description}
                                     </p>
                                 </div>
@@ -65,8 +65,6 @@ const posts = (await getCollection("posts")).sort(
                 </div>
             </div>
         </section>
-
-        <Footer />
     </main>
 </Layout>
 
@@ -76,7 +74,7 @@ const posts = (await getCollection("posts")).sort(
     }
 
     .page-hero {
-        padding: var(--space-2xl) 0;
+        padding: var(--space-lg) 0;
         border-bottom: 1px solid var(--color-border);
     }
 

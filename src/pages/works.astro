@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Footer from "../components/Footer.astro";
 
 const projects = [
     {
@@ -42,42 +41,43 @@ const projects = [
 ];
 ---
 
-<Layout title='Works | UWENAYO Alain Pacifique'>
-    <main class='works-page'>
-        <section class='page-hero'>
-            <div class='container'>
-                <h1 class='page-title fade-up'>Selected Works</h1>
-                <p class='page-subtitle fade-up'>
+<Layout title="Works | UWENAYO Alain Pacifique">
+    <main class="works-page">
+        <section class="page-hero">
+            <div class="container">
+                <h1 class="page-title fade-up">Selected Works</h1>
+                <p class="page-subtitle fade-up">
                     A showcase of my recent projects and experiments.
                 </p>
             </div>
         </section>
 
-        <section class='works-grid-section section'>
-            <div class='container'>
-                <div class='projects-grid'>
+        <section class="works-grid-section section">
+            <div class="container">
+                <div class="projects-grid">
                     {
                         projects.map((project) => (
                             <a
                                 href={`/projects/${project.slug}`}
-                                class='project-card fade-up'>
-                                <div class='project-image-container'>
+                                class="project-card fade-up"
+                            >
+                                <div class="project-image-container">
                                     <img
                                         src={project.image}
                                         alt={project.title}
-                                        class='project-image'
+                                        class="project-image"
                                     />
                                 </div>
-                                <div class='project-info'>
-                                    <div class='project-header'>
-                                        <h3 class='project-title'>
+                                <div class="project-info">
+                                    <div class="project-header">
+                                        <h3 class="project-title">
                                             {project.title}
                                         </h3>
-                                        <span class='project-year'>
+                                        <span class="project-year">
                                             {project.year}
                                         </span>
                                     </div>
-                                    <p class='project-category'>
+                                    <p class="project-category">
                                         {project.category}
                                     </p>
                                 </div>
@@ -87,8 +87,6 @@ const projects = [
                 </div>
             </div>
         </section>
-
-        <Footer />
     </main>
 </Layout>
 
@@ -98,7 +96,7 @@ const projects = [
     }
 
     .page-hero {
-        padding: var(--space-2xl) 0;
+        padding: var(--space-lg) 0;
         border-bottom: 1px solid var(--color-border);
     }
 

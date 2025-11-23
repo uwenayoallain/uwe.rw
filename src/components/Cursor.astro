@@ -1,25 +1,5 @@
-<div class='cursor-follower'></div>
-<div class='cursor-dot'></div>
-
-<button id='cursor-toggle' class='cursor-toggle' aria-label='Toggle Cursor'>
-    <span class='cursor-label'>Disable Cursor</span>
-    <svg
-        xmlns='http://www.w3.org/2000/svg'
-        width='24'
-        height='24'
-        viewBox='0 0 24 24'
-        fill='none'
-        stroke='currentColor'
-        stroke-width='2'
-        stroke-linecap='round'
-        stroke-linejoin='round'
-        class='cursor-icon'>
-        <path
-            d='M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z'
-        ></path>
-        <circle cx='12' cy='13' r='3'></circle>
-    </svg>
-</button>
+<div class="cursor-follower"></div>
+<div class="cursor-dot"></div>
 
 <script>
     import gsap from "gsap";
@@ -29,17 +9,22 @@
         const cursorFollower = document.querySelector(
             ".cursor-follower",
         ) as HTMLElement;
-        const toggleBtn = document.getElementById("cursor-toggle");
         const body = document.body;
 
-        // Check preference
-        const isCursorEnabled =
-            localStorage.getItem("cursorEnabled") !== "false";
+        // Check preference - Default to DISABLED if not set
+        const storedPref = localStorage.getItem("cursorEnabled");
+        const isCursorEnabled = storedPref === "true"; // Defaults to false if null or "false"
+
+        // Apply initial state
         if (!isCursorEnabled) {
             body.classList.add("custom-cursor-disabled");
+        } else {
+            body.classList.remove("custom-cursor-disabled");
         }
 
-        // Toggle functionality
+        // Toggle functionality - Button is now in Hero.astro
+        const toggleBtn = document.getElementById("cursor-toggle");
+
         if (toggleBtn) {
             const label = toggleBtn.querySelector(".cursor-label");
 
@@ -52,17 +37,20 @@
             };
 
             // Initial label state
-            updateLabel(isCursorEnabled === false);
+            updateLabel(!isCursorEnabled);
 
             toggleBtn.addEventListener("click", () => {
                 const isEnabled = !body.classList.contains(
                     "custom-cursor-disabled",
                 );
+
                 if (isEnabled) {
+                    // Disable it
                     body.classList.add("custom-cursor-disabled");
                     localStorage.setItem("cursorEnabled", "false");
                     updateLabel(true);
                 } else {
+                    // Enable it
                     body.classList.remove("custom-cursor-disabled");
                     localStorage.setItem("cursorEnabled", "true");
                     updateLabel(false);
@@ -195,56 +183,5 @@
             height 0.3s,
             background-color 0.3s;
         mix-blend-mode: difference;
-    }
-
-    /* Toggle Button */
-    .cursor-toggle {
-        position: fixed;
-        bottom: var(--space-lg);
-        left: var(--space-lg);
-        z-index: 100;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid var(--color-border);
-        color: var(--color-text-muted);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .cursor-toggle:hover {
-        background: var(--color-text);
-        color: var(--color-bg);
-        transform: scale(1.1);
-    }
-
-    :global(body.custom-cursor-disabled) .cursor-toggle {
-        opacity: 0.5;
-    }
-
-    :global(body.custom-cursor-disabled) .cursor-toggle:hover {
-        opacity: 1;
-    }
-
-    .cursor-label {
-        position: absolute;
-        left: 100%;
-        top: 50%;
-        transform: translateY(-50%) translateX(15px);
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        white-space: nowrap;
-        opacity: 1;
-        pointer-events: none;
-        border: 1px solid var(--color-border);
-        color: var(--color-text);
     }
 </style>
