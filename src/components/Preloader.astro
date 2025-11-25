@@ -1,72 +1,82 @@
-<div class='preloader'>
-    <div class='loader-text font-mono'>
-        <span class='word'>Crafting</span>
-        <span class='word'>Digital</span>
-        <span class='word'>Experiences</span>
+<div class="preloader" id="preloader">
+    <div class="loader-text">
+        <span class="word">Crafting</span>
+        <span class="word">Digital</span>
+        <span class="word">Experiences</span>
     </div>
 </div>
 
 <script is:inline>
-    // Check immediately to prevent flash
-    if (sessionStorage.getItem("preloaderShown")) {
-        document.querySelector(".preloader").style.display = "none";
-    }
+    (function () {
+        if (sessionStorage.getItem("preloaderShown")) {
+            document.getElementById("preloader").style.display = "none";
+        }
+    })();
 </script>
 
 <script>
     import gsap from "gsap";
 
-    document.addEventListener("astro:page-load", () => {
-        const preloader = document.querySelector(".preloader");
+    async function initPreloader() {
+        const preloader = document.getElementById("preloader");
+        if (!preloader) return;
 
-        if (preloader) {
-            const hasShown = sessionStorage.getItem("preloaderShown");
-
-            if (!hasShown) {
-                // Prevent scrolling during preload
-                document.body.style.overflow = "hidden";
-
-                // Mark as shown for this session
-                sessionStorage.setItem("preloaderShown", "true");
-
-                const words = document.querySelectorAll(".word");
-
-                const tl = gsap.timeline({
-                    onComplete: () => {
-                        (preloader as HTMLElement).style.display = "none";
-                        document.body.style.overflow = "";
-                    },
-                });
-
-                tl.to(words, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    stagger: 0.3,
-                    ease: "power3.out",
-                })
-                    .to(words, {
-                        y: -20,
-                        opacity: 0,
-                        duration: 0.5,
-                        stagger: 0.1,
-                        ease: "power3.in",
-                        delay: 0.5,
-                    })
-                    .to(
-                        preloader,
-                        {
-                            yPercent: -100,
-                            duration: 0.8,
-                            ease: "power4.inOut",
-                        },
-                        "-=0.2",
-                    );
-            } else {
-                (preloader as HTMLElement).style.display = "none";
-            }
+        if (sessionStorage.getItem("preloaderShown")) {
+            preloader.style.display = "none";
+            return;
         }
-    });
+
+        sessionStorage.setItem("preloaderShown", "true");
+        document.body.style.overflow = "hidden";
+
+        // Wait for fonts to load before starting animation
+        await document.fonts.ready;
+
+        const words = preloader.querySelectorAll(".word");
+
+        // Initial state
+        gsap.set(words, {
+            autoAlpha: 0,
+            y: 50,
+            filter: "blur(10px)",
+        });
+
+        const tl = gsap.timeline({
+            onComplete: () => {
+                preloader.style.display = "none";
+                document.body.style.overflow = "";
+            },
+        });
+
+        tl.to(words, {
+            autoAlpha: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 1,
+            stagger: 0.15,
+            ease: "power4.out",
+        })
+            .to(words, {
+                autoAlpha: 0,
+                y: -50,
+                filter: "blur(10px)",
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power3.in",
+                delay: 0.8,
+            })
+            .to(
+                preloader,
+                {
+                    yPercent: -100,
+                    duration: 0.8,
+                    ease: "power4.inOut",
+                },
+                "-=0.2",
+            );
+    }
+
+    document.addEventListener("astro:page-load", initPreloader);
 </script>
 
 <style>
@@ -81,17 +91,16 @@
     }
 
     .loader-text {
-        font-size: var(--text-xl);
+        font-family: var(--font-mono);
+        font-size: clamp(1.2rem, 3vw, 2rem);
         color: var(--color-brand-gold);
-        font-weight: bold;
+        font-weight: 600;
         display: flex;
-        gap: var(--space-sm);
-        overflow: hidden;
+        gap: 0.75rem;
     }
 
     .word {
-        opacity: 0;
-        transform: translateY(20px);
         display: inline-block;
+        opacity: 0;
     }
 </style>

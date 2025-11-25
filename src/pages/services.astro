@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout.astro";
 const services = [
     {
         id: "01",
+        slug: "web-design",
         title: "Web Design",
         description:
             "Crafting visually stunning and user-centric interfaces that leave a lasting impression. I focus on typography, layout, and micro-interactions to create a premium feel.",
@@ -16,6 +17,7 @@ const services = [
     },
     {
         id: "02",
+        slug: "development",
         title: "Development",
         description:
             "Building robust, scalable, and high-performance websites using modern technologies. I write clean, maintainable code that stands the test of time.",
@@ -28,6 +30,7 @@ const services = [
     },
     {
         id: "03",
+        slug: "brand-identity",
         title: "Brand Identity",
         description:
             "Defining and elevating your brand's voice and visual language across all touchpoints. A strong brand is the foundation of a successful digital presence.",
@@ -40,6 +43,7 @@ const services = [
     },
     {
         id: "04",
+        slug: "consulting",
         title: "Consulting",
         description:
             "Providing expert advice on digital strategy, technology stack selection, and user experience improvements to help your business grow.",
@@ -69,7 +73,7 @@ const services = [
                 <div class="services-list">
                     {
                         services.map((service) => (
-                            <div class="service-item fade-up">
+                            <div class="service-item fade-up" id={service.slug}>
                                 <div class="service-header">
                                     <span class="service-id">{service.id}</span>
                                     <h2 class="service-title">

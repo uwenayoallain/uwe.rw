@@ -38,15 +38,10 @@ const { title, description = "UWENAYO Alain Pacifique - Software Developer" } =
         </div>
         <Footer />
         <script>
-            import { initAnimations } from "../lib/animations.js";
+            import { initAnimations, cleanupAnimations } from "../lib/animations.js";
 
-            // Run on initial load
-            initAnimations();
-
-            // Run on view transitions
-            document.addEventListener("astro:page-load", () => {
-                initAnimations();
-            });
+            document.addEventListener("astro:before-swap", cleanupAnimations);
+            document.addEventListener("astro:page-load", initAnimations);
         </script>
     </body>
 </html>

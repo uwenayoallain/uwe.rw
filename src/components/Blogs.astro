@@ -51,25 +51,17 @@ const posts = (await getCollection("posts")).sort(
 <script>
     import gsap from "gsap";
 
-    document.addEventListener("astro:page-load", () => {
+    function initBlogs() {
         const blogList = document.getElementById("blog-list");
-        const previewContainer = document.querySelector(
-            ".blog-preview-image",
-        ) as HTMLElement;
-        const previewImg = document.getElementById(
-            "preview-img",
-        ) as HTMLImageElement;
+        const previewContainer = document.querySelector(".blog-preview-image") as HTMLElement;
+        const previewImg = document.getElementById("preview-img") as HTMLImageElement;
         const blogLinks = document.querySelectorAll(".blog-link");
 
         if (blogList && previewContainer && previewImg) {
-            // Move the preview container with mouse
             document.addEventListener("mousemove", (e) => {
-                const x = e.clientX;
-                const y = e.clientY;
-
                 gsap.to(previewContainer, {
-                    x: x,
-                    y: y,
+                    x: e.clientX,
+                    y: e.clientY,
                     duration: 0.8,
                     ease: "power3.out",
                 });
@@ -80,7 +72,6 @@ const posts = (await getCollection("posts")).sort(
                     const imageUrl = link.getAttribute("data-image");
                     if (imageUrl) {
                         previewImg.src = imageUrl;
-
                         gsap.to(previewContainer, {
                             scale: 1,
                             opacity: 1,
@@ -100,7 +91,9 @@ const posts = (await getCollection("posts")).sort(
                 });
             });
         }
-    });
+    }
+
+    document.addEventListener("astro:page-load", initBlogs);
 </script>
 
 <style>
@@ -166,7 +159,6 @@ const posts = (await getCollection("posts")).sort(
         display: none;
     }
 
-    /* Floating Preview Image */
     .blog-preview-image {
         position: fixed;
         top: 0;

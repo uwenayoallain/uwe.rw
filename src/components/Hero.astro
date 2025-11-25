@@ -94,7 +94,6 @@ const profileImage = "/uwe.png";
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Live Clock Function
     function updateTime() {
         const timeElement = document.getElementById("local-time");
         if (timeElement) {
@@ -109,165 +108,107 @@ const profileImage = "/uwe.png";
         }
     }
 
-    document.addEventListener("astro:page-load", () => {
-        // Start Clock
+    function initHero() {
+        const hero = document.querySelector(".hero");
+        if (!hero) return;
+
         updateTime();
-        const timeInterval = setInterval(updateTime, 1000);
+        setInterval(updateTime, 1000);
 
-        // Ensure fonts are loaded before splitting
-        document.fonts.ready.then(() => {
-            const title = new SplitType(".name", {
-                types: "chars,words",
-            });
-            const role = new SplitType(".role", {
-                types: "chars,words",
-            });
-            const introHeadline = new SplitType(".intro-headline", {
-                types: "lines,words",
-            });
+        setTimeout(() => {
+            const nameEl = document.querySelector(".name") as HTMLElement;
+            const roleEl = document.querySelector(".role") as HTMLElement;
+            const introEl = document.querySelector(".intro-headline") as HTMLElement;
+            
+            if (!nameEl || !roleEl || !introEl) return;
 
-            const tl = gsap.timeline({
-                defaults: { ease: "expo.out" },
-            });
+            const title = new SplitType(nameEl, { types: "chars,words" });
+            const role = new SplitType(roleEl, { types: "chars,words" });
+            const introHeadline = new SplitType(introEl, { types: "lines,words" });
 
-            // Initial reveal
-            tl.from(title.chars, {
-                y: 100,
-                opacity: 0,
+            gsap.set([title.chars, role.chars], { y: 100, opacity: 0 });
+            gsap.set(".location-wrapper", { x: -20, opacity: 0 });
+            gsap.set(introHeadline.words, { y: 20, opacity: 0 });
+            gsap.set(".intro-subtext", { y: 20, opacity: 0 });
+            gsap.set(".hero-image-wrapper", { clipPath: "inset(100% 0% 0% 0%)", scale: 1.2 });
+            gsap.set(".rgb-layer", { scale: 1.4 });
+
+            const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+
+            tl.to(title.chars, {
+                y: 0,
+                opacity: 1,
                 duration: 1,
                 stagger: 0.02,
                 delay: 0.1,
             })
-                .from(
-                    role.chars,
-                    {
-                        y: 20,
-                        opacity: 0,
-                        duration: 0.8,
-                        stagger: 0.01,
-                    },
-                    "-=0.8",
-                )
-                .from(
-                    ".location-wrapper",
-                    {
-                        x: -20,
-                        opacity: 0,
-                        duration: 0.8,
-                    },
-                    "-=0.6",
-                )
-                .from(
-                    introHeadline.words,
-                    {
-                        y: 20,
-                        opacity: 0,
-                        duration: 0.8,
-                        stagger: 0.02,
-                    },
-                    "-=0.7",
-                )
-                .from(
-                    ".intro-subtext",
-                    {
-                        y: 20,
-                        opacity: 0,
-                        duration: 0.8,
-                    },
-                    "-=0.6",
-                )
-                .from(
-                    ".hero-image-wrapper",
-                    {
-                        clipPath: "inset(100% 0% 0% 0%)",
-                        scale: 1.2,
-                        duration: 1.5,
-                        ease: "power4.out",
-                    },
-                    "-=1.0",
-                )
-                .from(
-                    ".rgb-layer",
-                    {
-                        scale: 1.4,
-                        duration: 1.5,
-                        ease: "power4.out",
-                    },
-                    "<",
-                );
+            .to(role.chars, {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.01,
+            }, "-=0.8")
+            .to(".location-wrapper", {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+            }, "-=0.6")
+            .to(introHeadline.words, {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.02,
+            }, "-=0.7")
+            .to(".intro-subtext", {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+            }, "-=0.6")
+            .to(".hero-image-wrapper", {
+                clipPath: "inset(0% 0% 0% 0%)",
+                scale: 1,
+                duration: 1.5,
+                ease: "power4.out",
+            }, "-=1.0")
+            .to(".rgb-layer", {
+                scale: 1,
+                duration: 1.5,
+                ease: "power4.out",
+            }, "<");
 
-            // Parallax effect
-            gsap.to(".hero-background", {
-                yPercent: 20,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true,
-                },
+            ScrollTrigger.create({
+                trigger: ".hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true,
+                animation: gsap.to(".hero-background", { yPercent: 20, ease: "none" }),
             });
 
-            gsap.to(".name", {
-                yPercent: 30,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true,
-                },
+            ScrollTrigger.create({
+                trigger: ".hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true,
+                animation: gsap.to(".name", { yPercent: 30, ease: "none" }),
             });
 
-            // Magnetic & RGB Shift Effect
-            const magneticItem = document.querySelector(
-                ".magnetic-item",
-            ) as HTMLElement;
+            const magneticItem = document.querySelector(".magnetic-item") as HTMLElement;
             const layers = document.querySelectorAll(".rgb-layer");
 
             if (magneticItem && layers.length === 3) {
-                magneticItem.addEventListener("mousemove", (e) => {
-                    const { left, top, width, height } =
-                        magneticItem.getBoundingClientRect();
+                magneticItem.addEventListener("mousemove", (e: MouseEvent) => {
+                    const { left, top, width, height } = magneticItem.getBoundingClientRect();
                     const x = e.clientX - left - width / 2;
                     const y = e.clientY - top - height / 2;
 
-                    // Move container
-                    gsap.to(magneticItem, {
-                        x: x * 0.2,
-                        y: y * 0.2,
-                        duration: 0.5,
-                        ease: "power2.out",
-                    });
-
-                    // RGB Shift - separate layers based on movement
-                    // Red layer
-                    gsap.to(layers[0], {
-                        x: x * 0.05,
-                        y: y * 0.05,
-                        duration: 0.4,
-                        ease: "power2.out",
-                    });
-
-                    // Green layer (Anchor)
-                    gsap.to(layers[1], {
-                        x: 0,
-                        y: 0,
-                        duration: 0.4,
-                        ease: "power2.out",
-                    });
-
-                    // Blue layer
-                    gsap.to(layers[2], {
-                        x: x * -0.05,
-                        y: y * -0.05,
-                        duration: 0.4,
-                        ease: "power2.out",
-                    });
+                    gsap.to(magneticItem, { x: x * 0.2, y: y * 0.2, duration: 0.5, ease: "power2.out" });
+                    gsap.to(layers[0], { x: x * 0.05, y: y * 0.05, duration: 0.4, ease: "power2.out" });
+                    gsap.to(layers[1], { x: 0, y: 0, duration: 0.4, ease: "power2.out" });
+                    gsap.to(layers[2], { x: x * -0.05, y: y * -0.05, duration: 0.4, ease: "power2.out" });
                 });
 
                 magneticItem.addEventListener("mouseleave", () => {
-                    gsap.to([magneticItem, ...layers], {
+                    gsap.to([magneticItem, ...Array.from(layers)], {
                         x: 0,
                         y: 0,
                         duration: 0.8,
@@ -275,11 +216,10 @@ const profileImage = "/uwe.png";
                     });
                 });
             }
-        });
+        }, 100);
+    }
 
-        // Cleanup interval on page unload (optional but good practice)
-        return () => clearInterval(timeInterval);
-    });
+    document.addEventListener("astro:page-load", initHero);
 </script>
 
 <style>
@@ -366,13 +306,13 @@ const profileImage = "/uwe.png";
         text-transform: uppercase;
         mix-blend-mode: difference;
         color: var(--color-text);
-        margin-left: -0.05em; /* Optical alignment */
-        text-align: center; /* Centered for impact */
+        margin-left: -0.05em;
+        text-align: center;
     }
 
     .indent {
         display: block;
-        color: var(--color-brand-gold); /* Gold accent for last name */
+        color: var(--color-brand-gold);
     }
 
     .hero-footer {
@@ -422,7 +362,6 @@ const profileImage = "/uwe.png";
         transition: transform 0.3s ease;
     }
 
-    /* RGB Shift Styles */
     .rgb-shift-container {
         position: relative;
         width: 100%;
@@ -437,7 +376,7 @@ const profileImage = "/uwe.png";
         height: 100%;
         object-fit: cover;
         mix-blend-mode: screen;
-        transition: transform 0.1s ease-out; /* Smooth follow */
+        transition: transform 0.1s ease-out;
     }
 
     .layer-r {
@@ -446,12 +385,10 @@ const profileImage = "/uwe.png";
     .layer-g {
         opacity: 1;
         mix-blend-mode: normal;
-    } /* Base layer */
+    }
     .layer-b {
         opacity: 1;
     }
-
-    /* Hide other layers if not supported or needed, but here we want them visible */
 
     .magnetic-item {
         will-change: transform;
@@ -461,12 +398,7 @@ const profileImage = "/uwe.png";
         width: 100%;
         height: 100%;
         object-fit: cover;
-        /* transition: transform 0.7s var(--ease-out-expo); */ /* Removed for RGB shift */
     }
-
-    /* .hero-image-wrapper:hover .profile-image {
-      transform: scale(1.1);
-  } */ /* Removed for RGB shift */
 
     .role {
         font-size: var(--text-lg);
@@ -494,7 +426,6 @@ const profileImage = "/uwe.png";
         font-variant-numeric: tabular-nums;
     }
 
-    /* Cursor Toggle in Hero */
     .cursor-toggle {
         background: transparent;
         border: 1px solid var(--color-border);

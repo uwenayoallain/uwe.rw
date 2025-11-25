@@ -69,8 +69,7 @@ const { Content } = await post.render();
 
     gsap.registerPlugin(ScrollTrigger);
 
-    document.addEventListener("astro:page-load", () => {
-        // Reading Progress Bar
+    function initBlogPost() {
         gsap.to(".progress-bar", {
             scaleX: 1,
             ease: "none",
@@ -82,10 +81,8 @@ const { Content } = await post.render();
             },
         });
 
-        // Split Text Animation for Title
         animateHeroText(".split-text");
 
-        // Hero Image Parallax
         const heroImage = document.querySelector(".hero-image");
         if (heroImage) {
             gsap.to(heroImage, {
@@ -100,7 +97,6 @@ const { Content } = await post.render();
             });
         }
 
-        // Content Entrance
         const contentElements = document.querySelectorAll(".content > *");
         if (contentElements.length > 0) {
             gsap.from(contentElements, {
@@ -116,7 +112,6 @@ const { Content } = await post.render();
             });
         }
 
-        // Header Elements Entrance
         gsap.from([".back-link", ".meta"], {
             y: -20,
             opacity: 0,
@@ -125,7 +120,9 @@ const { Content } = await post.render();
             ease: "power2.out",
             delay: 0.1,
         });
-    });
+    }
+
+    document.addEventListener("astro:page-load", initBlogPost);
 </script>
 
 <style>
@@ -216,7 +213,7 @@ const { Content } = await post.render();
 
     .hero-image {
         width: 100%;
-        height: 130%; /* Taller for parallax */
+        height: 130%;
         object-fit: cover;
         position: relative;
         top: -10%;
@@ -233,7 +230,6 @@ const { Content } = await post.render();
         color: var(--color-text-muted);
     }
 
-    /* Markdown Styles */
     .content :global(h2) {
         font-family: var(--font-display);
         font-size: var(--text-3xl);

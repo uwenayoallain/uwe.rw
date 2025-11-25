@@ -16,7 +16,7 @@
     "@fontsource/jersey-25": "^5.1.0",
     "@fontsource/space-grotesk": "^5.1.0",
     "@tailwindcss/vite": "^4.1.16",
-    "astro": "^5.15.2",
+    "astro": "^5.16.0",
     "gsap": "^3.12.5",
     "lenis": "^1.1.0",
     "lottie-web": "^5.12.0",

@@ -103,8 +103,7 @@ const { project } = Astro.props;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    document.addEventListener("astro:page-load", () => {
-        // Reading Progress Bar
+    function initProjectDetail() {
         gsap.to(".progress-bar", {
             scaleX: 1,
             ease: "none",
@@ -116,10 +115,8 @@ const { project } = Astro.props;
             },
         });
 
-        // Split Text Animation for Title
         animateHeroText(".split-text");
 
-        // Hero Image Parallax
         const heroImage = document.querySelector(".hero-image");
         if (heroImage) {
             gsap.to(heroImage, {
@@ -134,7 +131,6 @@ const { project } = Astro.props;
             });
         }
 
-        // Content Entrance
         const contentElements = document.querySelectorAll(".content > *");
         if (contentElements.length > 0) {
             gsap.from(contentElements, {
@@ -150,7 +146,6 @@ const { project } = Astro.props;
             });
         }
 
-        // Header Elements Entrance
         gsap.from([".back-link", ".meta"], {
             y: -20,
             opacity: 0,
@@ -159,7 +154,9 @@ const { project } = Astro.props;
             ease: "power2.out",
             delay: 0.1,
         });
-    });
+    }
+
+    document.addEventListener("astro:page-load", initProjectDetail);
 </script>
 
 <style>
@@ -250,7 +247,7 @@ const { project } = Astro.props;
 
     .hero-image {
         width: 100%;
-        height: 130%; /* Taller for parallax */
+        height: 130%;
         object-fit: cover;
         position: relative;
         top: -10%;
@@ -267,7 +264,6 @@ const { project } = Astro.props;
         color: var(--color-text-muted);
     }
 
-    /* Content Styles */
     .content h2 {
         font-family: var(--font-display);
         font-size: var(--text-3xl);

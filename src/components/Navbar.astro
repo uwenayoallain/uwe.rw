@@ -1,9 +1,4 @@
 ---
-const links = [
-    { name: "Work", url: "#work" },
-    { name: "About", url: "#about" },
-    { name: "Contact", url: "#contact" },
-];
 ---
 
 <nav class="navbar">
@@ -32,11 +27,10 @@ const links = [
 
     gsap.registerPlugin(ScrollTrigger);
 
-    document.addEventListener("astro:page-load", () => {
-        const navbar = document.querySelector(".navbar");
+    function initNavbar() {
+        const navbar = document.querySelector(".navbar") as HTMLElement;
         if (!navbar) return;
 
-        // Show navbar on load
         gsap.from(navbar, {
             yPercent: -100,
             duration: 0.8,
@@ -45,7 +39,7 @@ const links = [
         });
 
         let lastScroll = 0;
-        const scrollThreshold = 5; // Minimum scroll delta to trigger hide/show
+        const scrollThreshold = 5;
 
         ScrollTrigger.create({
             start: "top top",
@@ -57,14 +51,12 @@ const links = [
                 const isScrollingUp = scrollDelta < -scrollThreshold;
                 const isScrolled = currentScroll > 50;
 
-                // Toggle scrolled class
                 if (isScrolled) {
                     navbar.classList.add("scrolled");
                 } else {
                     navbar.classList.remove("scrolled");
                 }
 
-                // Hide/Show logic with threshold
                 if (isScrollingDown && isScrolled) {
                     gsap.to(navbar, {
                         yPercent: -100,
@@ -84,7 +76,9 @@ const links = [
                 lastScroll = currentScroll;
             },
         });
-    });
+    }
+
+    document.addEventListener("astro:page-load", initNavbar);
 </script>
 
 <style>
@@ -108,7 +102,6 @@ const links = [
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* Adjust mix-blend-mode only when not scrolled or handle colors manually */
     .navbar:not(.scrolled) {
         mix-blend-mode: difference;
     }

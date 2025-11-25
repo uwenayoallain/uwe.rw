@@ -1,28 +1,32 @@
 <div class="cursor-follower"></div>
 <div class="cursor-dot"></div>
 
+<script is:inline>
+    (function() {
+        var isDisabled = localStorage.getItem("cursorEnabled") !== "true";
+        if (isDisabled) {
+            document.body.classList.add("custom-cursor-disabled");
+        }
+    })();
+</script>
+
 <script>
     import gsap from "gsap";
 
-    document.addEventListener("astro:page-load", () => {
+    function initCursor() {
         const cursorDot = document.querySelector(".cursor-dot") as HTMLElement;
-        const cursorFollower = document.querySelector(
-            ".cursor-follower",
-        ) as HTMLElement;
+        const cursorFollower = document.querySelector(".cursor-follower") as HTMLElement;
         const body = document.body;
 
-        // Check preference - Default to DISABLED if not set
         const storedPref = localStorage.getItem("cursorEnabled");
-        const isCursorEnabled = storedPref === "true"; // Defaults to false if null or "false"
+        const isCursorEnabled = storedPref === "true";
 
-        // Apply initial state
         if (!isCursorEnabled) {
             body.classList.add("custom-cursor-disabled");
         } else {
             body.classList.remove("custom-cursor-disabled");
         }
 
-        // Toggle functionality - Button is now in Hero.astro
         const toggleBtn = document.getElementById("cursor-toggle");
 
         if (toggleBtn) {
@@ -30,27 +34,20 @@
 
             const updateLabel = (disabled: boolean) => {
                 if (label) {
-                    label.textContent = disabled
-                        ? "Enable Cursor"
-                        : "Disable Cursor";
+                    label.textContent = disabled ? "Enable Cursor" : "Disable Cursor";
                 }
             };
 
-            // Initial label state
             updateLabel(!isCursorEnabled);
 
             toggleBtn.addEventListener("click", () => {
-                const isEnabled = !body.classList.contains(
-                    "custom-cursor-disabled",
-                );
+                const isEnabled = !body.classList.contains("custom-cursor-disabled");
 
                 if (isEnabled) {
-                    // Disable it
                     body.classList.add("custom-cursor-disabled");
                     localStorage.setItem("cursorEnabled", "false");
                     updateLabel(true);
                 } else {
-                    // Enable it
                     body.classList.remove("custom-cursor-disabled");
                     localStorage.setItem("cursorEnabled", "true");
                     updateLabel(false);
@@ -58,26 +55,18 @@
             });
         }
 
-        if (
-            window.matchMedia("(pointer: fine)").matches &&
-            cursorDot &&
-            cursorFollower
-        ) {
-            gsap.set(cursorDot, { xPercent: -50, yPercent: -50, opacity: 0 });
-            gsap.set(cursorFollower, {
-                xPercent: -50,
-                yPercent: -50,
-                opacity: 0,
-            });
-
+        if (window.matchMedia("(pointer: fine)").matches && cursorDot && cursorFollower) {
             let isVisible = false;
 
-            const onMouseMove = (e: MouseEvent) => {
+            window.addEventListener("mousemove", (e: MouseEvent) => {
                 if (!isVisible) {
-                    gsap.to([cursorDot, cursorFollower], {
-                        opacity: 1,
-                        duration: 0.3,
+                    gsap.set([cursorDot, cursorFollower], { 
+                        x: e.clientX, 
+                        y: e.clientY,
+                        xPercent: -50,
+                        yPercent: -50
                     });
+                    gsap.to([cursorDot, cursorFollower], { opacity: 1, duration: 0.3 });
                     isVisible = true;
                 }
 
@@ -94,11 +83,8 @@
                     duration: 0.5,
                     ease: "power2.out",
                 });
-            };
+            });
 
-            window.addEventListener("mousemove", onMouseMove);
-
-            // Hover effects
             const interactiveElements = document.querySelectorAll(
                 "a, button, .project-card, .blog-card, .blog-link",
             );
@@ -111,10 +97,7 @@
                         border: "none",
                         duration: 0.3,
                     });
-                    gsap.to(cursorDot, {
-                        scale: 0,
-                        duration: 0.3,
-                    });
+                    gsap.to(cursorDot, { scale: 0, duration: 0.3 });
                 });
 
                 el.addEventListener("mouseleave", () => {
@@ -124,14 +107,13 @@
                         border: "1px solid var(--color-text)",
                         duration: 0.3,
                     });
-                    gsap.to(cursorDot, {
-                        scale: 1,
-                        duration: 0.3,
-                    });
+                    gsap.to(cursorDot, { scale: 1, duration: 0.3 });
                 });
             });
         }
-    });
+    }
+
+    document.addEventListener("astro:page-load", initCursor);
 </script>
 
 <style>
@@ -143,26 +125,27 @@
         border-radius: 50%;
         pointer-events: none;
         z-index: 9999;
-        display: none;
+        opacity: 0;
+        transform: translate(-50%, -50%);
     }
 
     @media (pointer: fine) {
-        .cursor-dot,
-        .cursor-follower {
-            display: block;
-        }
-
-        /* Hide custom cursor when disabled */
         :global(body.custom-cursor-disabled) .cursor-dot,
         :global(body.custom-cursor-disabled) .cursor-follower {
             display: none !important;
         }
 
-        /* Restore default cursor when disabled */
         :global(body.custom-cursor-disabled),
         :global(body.custom-cursor-disabled) a,
         :global(body.custom-cursor-disabled) button {
             cursor: auto !important;
+        }
+    }
+
+    @media (pointer: coarse) {
+        .cursor-dot,
+        .cursor-follower {
+            display: none !important;
         }
     }
 
@@ -177,11 +160,6 @@
         width: 40px;
         height: 40px;
         border: 1px solid var(--color-text);
-        transition:
-            transform 0.1s,
-            width 0.3s,
-            height 0.3s,
-            background-color 0.3s;
         mix-blend-mode: difference;
     }
 </style>

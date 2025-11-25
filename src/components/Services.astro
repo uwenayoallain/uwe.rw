@@ -2,27 +2,31 @@
 const services = [
     {
         id: "01",
+        slug: "web-design",
         title: "Web Design",
         description:
             "Crafting visually stunning and user-centric interfaces that leave a lasting impression.",
     },
     {
         id: "02",
+        slug: "development",
         title: "Development",
         description:
             "Building robust, scalable, and high-performance websites using modern technologies.",
     },
     {
         id: "03",
-        title: "SEO Optimization",
-        description:
-            "Enhancing visibility and driving organic traffic through strategic optimization.",
-    },
-    {
-        id: "04",
+        slug: "brand-identity",
         title: "Brand Identity",
         description:
             "Defining and elevating your brand's voice and visual language across all touchpoints.",
+    },
+    {
+        id: "04",
+        slug: "consulting",
+        title: "Consulting",
+        description:
+            "Providing expert advice on digital strategy, technology stack selection, and user experience improvements.",
     },
 ];
 ---
@@ -37,7 +41,10 @@ const services = [
         <div class="services-list">
             {
                 services.map((service) => (
-                    <div class="service-item fade-up">
+                    <a
+                        href={`/services#${service.slug}`}
+                        class="service-item fade-up"
+                    >
                         <div class="service-id">{service.id}</div>
                         <div class="service-content">
                             <h3 class="service-title">{service.title}</h3>
@@ -62,7 +69,7 @@ const services = [
                                 />
                             </svg>
                         </div>
-                    </div>
+                    </a>
                 ))
             }
         </div>
@@ -72,11 +79,12 @@ const services = [
 <script>
     import gsap from "gsap";
 
-    document.addEventListener("astro:page-load", () => {
+    function initServices() {
         const items = document.querySelectorAll(".service-item");
 
         items.forEach((item) => {
             const icon = item.querySelector(".service-icon");
+            if (!icon) return;
 
             item.addEventListener("mouseenter", () => {
                 gsap.to(icon, {
@@ -96,7 +104,9 @@ const services = [
                 });
             });
         });
-    });
+    }
+
+    document.addEventListener("astro:page-load", initServices);
 </script>
 
 <style>
@@ -131,7 +141,8 @@ const services = [
         padding: var(--space-lg) 0;
         border-top: 1px solid var(--color-border);
         transition: background-color 0.3s ease;
-        cursor: default;
+        text-decoration: none;
+        color: inherit;
     }
 
     .service-item:last-child {
