@@ -1,54 +1,58 @@
 ---
-title: "Vibe Coding Is Real and I Am Not Going Back"
-description: "I built a full app by describing what I wanted instead of writing every line. It worked better than I expected."
+title: "Building The Records App: A Dev Log"
+description: "How a WhatsApp group problem turned into my first real full-stack project, and everything that went wrong along the way."
 pubDate: "2025-12-15"
 heroImage: "../../assets/blog/records-app-light.png"
 heroImageDark: "../../assets/blog/records-app-dark.png"
 tags: ["Dev Log"]
 ---
 
-# Vibe Coding Is Real and I Am Not Going Back
+# Building The Records App: A Dev Log
 
-Someone coined the term "vibe coding" and I thought it was a joke. The idea that you could build software by just describing what you want, iterating through conversation, and barely touching the actual code yourself. It sounded like something a non-developer would dream up.
+The Records App started because my friends and I were terrible at tracking money.
 
-Then I tried it. And now I have a working app that I mostly talked into existence.
+We had a WhatsApp group called "House Finances" where someone would send a message like "paid 15k for water bill, everyone owes 3k." Then that message would get buried under memes and voice notes, and two months later nobody could remember who paid what. We tried spreadsheets. We tried note apps. Everything fell apart because nobody wanted to maintain it.
 
-## How it started
+So I built something. [The Records App](https://saving.uwe.rw) is a savings and expense tracker that actually stuck. Here is how it went.
 
-I needed a financial tracker for splitting expenses with friends. The kind of thing I would normally spend a weekend scaffolding — setting up the database, wiring up auth, building forms. Instead, I opened an AI coding assistant and started describing what I wanted.
+## The first version was terrible
 
-"I need a page that shows all transactions for a group. Each transaction has a payer, an amount, and a list of people who owe. Calculate who owes what."
+I started with React, TypeScript, and a vague idea of what I wanted. The first version had no auth — just a single shared page where anyone could edit anything. I thought that was fine for a small group. It was not fine. Someone accidentally deleted a month of records, and I had no way to recover them because I also had no backup strategy.
 
-And it just... worked. Not perfectly on the first try, but close enough that I was refining instead of building from zero.
+Lesson learned the hard way: if people are entering data they care about, you need auth and you need backups. There are no shortcuts here.
 
-## What vibe coding actually looks like
+## The tech stack, and why
 
-It is not magic. You still need to know what you want. You still need to understand enough about how software works to evaluate what the AI gives you. But the flow is completely different.
+I went with React and TypeScript on the frontend, Node.js and PostgreSQL on the backend. Nothing fancy. I picked these because I actually know them, not because they are the optimal choice for a savings tracker.
 
-Instead of writing code line by line, you describe behavior. "When a user adds an expense, split it equally among the selected people. If it does not divide evenly, handle the remainder." Then you look at what comes back, try it, and adjust.
+There is a temptation when starting a new project to use it as an excuse to learn a new framework. I have fallen for that before and it always doubles the timeline. This time I wanted to ship, not learn. I could experiment on something else.
 
-The cycle is: describe → generate → test → refine. Over and over. It feels less like programming and more like directing. You are the architect, and the AI is a very fast (and sometimes overconfident) builder.
+Tailwind CSS for styling, because writing my own CSS classes for form inputs is not how I want to spend my weekends.
 
-## Where it breaks down
+## The hard part was not the code
 
-AI is great at common patterns. CRUD apps, standard UI components, well-documented APIs — it handles those well. Where it struggles is anything that requires deep context about _your specific system_. The debt settlement logic in my app was a good example. The AI kept producing solutions that worked for simple cases but fell apart when things got messy — partial payments, people leaving groups, overlapping expenses.
+Getting the CRUD operations working was straightforward. User signs up, creates a group, adds transactions, sees a dashboard. Standard stuff.
 
-For those parts, I had to think it through myself, sketch the logic, and then implement it with AI assisting on the details. The hard thinking was still mine.
+The hard part was the logic around settlements. When five people are sharing expenses unevenly over several months — some people paying rent, others covering groceries, someone spotting cash for a taxi — figuring out "who owes who and how much" gets complicated fast.
 
-And debugging. When something breaks in AI-generated code, you need to actually understand the code to fix it. If you have been blindly accepting suggestions without reading them, you are going to have a bad time when things go wrong.
+My first attempt was a simple running tally. Person A has paid X total, their share is Y, so they owe or are owed Z. That works until people start making partial payments, or someone leaves the group mid-month, or two people settle up outside the app.
 
-## The productivity difference is real
+I ended up rewriting the settlement logic three times. The version that works treats every transaction as a ledger entry and calculates net balances from scratch each time. Not the most efficient approach, but it is correct and I can actually debug it when something looks wrong.
 
-I am not exaggerating when I say this approach cut my development time in half. Maybe more. The parts that used to take hours — boilerplate, form handling, repetitive UI work — now take minutes. That freed me up to spend more time on the parts that actually matter: the user experience, the edge cases, the stuff that makes someone choose your app over a WhatsApp group.
+## Things I would do differently
 
-## Who this works for
+**Start with the data model.** I designed the UI first and then tried to make the database fit. That led to awkward workarounds and a migration I would rather forget. If I could redo it, I would start by sketching out the tables and relationships on paper before writing any frontend code.
 
-If you have been coding for a while and understand how applications are structured, vibe coding is a massive upgrade. You know enough to steer the AI, catch its mistakes, and fill in the gaps.
+**Add tests earlier.** I have no automated tests. I tested everything manually, which worked when the app was small but became painful as features piled up. Every time I changed the settlement logic, I had to manually re-check a dozen scenarios. That is time I will never get back.
 
-If you are just starting out, I would be more cautious. You need to understand what good code looks like before you can evaluate AI-generated code. Otherwise you are building on a foundation you do not understand, and that catches up with you.
+**Deploy sooner.** I waited until the app felt "ready" before putting it online. That took months. Meanwhile, my friends were still losing track of expenses in WhatsApp. I should have deployed the ugly first version and improved it live. Nobody cares about polish when the alternative is a group chat.
 
-## The uncomfortable truth
+## It is live and people use it
 
-A lot of what I used to spend my time on — the repetitive, mechanical parts of coding — is not valuable anymore. That is a weird thing to accept. But the parts that are still valuable, like critical thinking, system design, and understanding users, are more important than ever.
+The app is at [saving.uwe.rw](https://saving.uwe.rw) and my friends actually use it. That still feels surreal. Something I built from scratch, running on a server, with real people depending on it to track real money.
 
-I would rather spend my time on those things anyway.
+It is not perfect. The mobile experience needs work, the dashboard could show more useful summaries, and I want to add recurring expenses at some point. But it works. People open it, add their transactions, and trust the numbers.
+
+That is the best feeling in this job — when something you made becomes part of someone's routine. Not because they have to use it, but because it actually solves their problem better than the alternative.
+
+The [source code is on GitHub](https://github.com/uwenayoallain/therecordsapp) if you want to look. Fair warning: you will find at least three things you would have done differently. That is fine. So would I.
