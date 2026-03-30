@@ -2,200 +2,253 @@
 import { getCollection } from "astro:content";
 
 const posts = (await getCollection("posts")).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
 <section id='work' class='blogs section'>
+  <div class='container'>
     <div class='section-header'>
-        <h2 class='section-title font-mono text-muted'>Selected Writing</h2>
+      <h2 class='section-title font-mono text-muted'>Selected Writing</h2>
     </div>
 
     <div class='blog-list' id='blog-list'>
-        {
-            posts.map((post, index) => (
-                <article class='blog-item'>
-                    <a
-                        href={`/blog/${post.slug}`}
-                        class='blog-link'
-                        data-image={
-                            post.data.heroImage || "/project_thumbnail_1.png"
-                        }>
-                        <span class='index font-mono text-muted'>
-                            {(index + 1).toString().padStart(2, "0")}
-                        </span>
-                        <h3 class='title'>{post.data.title}</h3>
-                        <span class='category font-mono text-muted'>
-                            {post.data.tags[0] || "General"}
-                        </span>
-                        <span class='date font-mono text-muted'>
-                            {post.data.pubDate.toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                            })}
-                        </span>
-                    </a>
-                </article>
-            ))
-        }
+      {
+        posts.map((post, index) => (
+          <article class='blog-item'>
+            <a
+              href={`/blog/${post.id}`}
+              class='blog-link'
+              data-image={post.data.heroImage?.src || "/project_thumbnail_1.png"}
+              data-image-dark={
+                post.data.heroImageDark?.src ||
+                post.data.heroImage?.src ||
+                "/project_thumbnail_1.png"
+              }>
+              <span class='index font-mono text-muted'>
+                {(index + 1).toString().padStart(2, "0")}
+              </span>
+              <h3 class='title'>{post.data.title}</h3>
+              <span class='category font-mono text-muted'>
+                {post.data.tags[0] || "General"}
+              </span>
+              <span class='date font-mono text-muted'>
+                {post.data.pubDate.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </span>
+            </a>
+          </article>
+        ))
+      }
     </div>
+  </div>
 
-    <div class='blog-preview-image'>
-        <div class='preview-inner'>
-            <img src='' alt='Blog Preview' id='preview-img' />
-        </div>
+  <div class='blog-preview-image'>
+    <div class='preview-inner'>
+      <img src='' alt='Blog Preview' id='preview-img' />
     </div>
+  </div>
 </section>
 
 <script>
-    import gsap from "gsap";
+  import gsap from "gsap";
 
-    function initBlogs() {
-        const blogList = document.getElementById("blog-list");
-        const previewContainer = document.querySelector(".blog-preview-image") as HTMLElement;
-        const previewImg = document.getElementById("preview-img") as HTMLImageElement;
-        const blogLinks = document.querySelectorAll(".blog-link");
+  let blogCleanupFns: (() => void)[] = [];
 
-        if (blogList && previewContainer && previewImg) {
-            document.addEventListener("mousemove", (e) => {
-                gsap.to(previewContainer, {
-                    x: e.clientX,
-                    y: e.clientY,
-                    duration: 0.8,
-                    ease: "power3.out",
-                });
-            });
+  function cleanupBlogs() {
+    blogCleanupFns.forEach((fn) => fn());
+    blogCleanupFns = [];
+  }
 
-            blogLinks.forEach((link) => {
-                link.addEventListener("mouseenter", () => {
-                    const imageUrl = link.getAttribute("data-image");
-                    if (imageUrl) {
-                        previewImg.src = imageUrl;
-                        gsap.to(previewContainer, {
-                            scale: 1,
-                            opacity: 1,
-                            duration: 0.4,
-                            ease: "power2.out",
-                        });
-                    }
-                });
+  function initBlogs() {
+    cleanupBlogs();
 
-                link.addEventListener("mouseleave", () => {
-                    gsap.to(previewContainer, {
-                        scale: 0,
-                        opacity: 0,
-                        duration: 0.4,
-                        ease: "power2.out",
-                    });
-                });
-            });
+    const blogList = document.getElementById("blog-list");
+    const previewContainer = document.querySelector(
+      ".blog-preview-image",
+    ) as HTMLElement;
+    const previewImg = document.getElementById(
+      "preview-img",
+    ) as HTMLImageElement;
+    const blogLinks = document.querySelectorAll(".blog-link");
+
+    if (blogList && previewContainer && previewImg) {
+      let positionReady = false;
+
+      // Set initial GSAP state — manage all transforms via GSAP to avoid CSS conflicts
+      gsap.set(previewContainer, {
+        xPercent: -50,
+        yPercent: -50,
+        scale: 0,
+        opacity: 0,
+      });
+
+      const mousemoveHandler = (e: MouseEvent) => {
+        if (!positionReady) {
+          gsap.set(previewContainer, { x: e.clientX, y: e.clientY });
+          positionReady = true;
         }
-    }
+        gsap.to(previewContainer, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.8,
+          ease: "power3.out",
+          overwrite: "auto",
+        });
+      };
 
-    document.addEventListener("astro:page-load", initBlogs);
+      blogList.addEventListener("mousemove", mousemoveHandler);
+      blogCleanupFns.push(() =>
+        blogList.removeEventListener("mousemove", mousemoveHandler),
+      );
+
+      blogLinks.forEach((link) => {
+        const enterHandler = (e: MouseEvent) => {
+          // Set position immediately if mousemove hasn't fired yet
+          if (!positionReady) {
+            gsap.set(previewContainer, { x: e.clientX, y: e.clientY });
+            positionReady = true;
+          }
+          const isDark = document.documentElement.classList.contains("dark");
+          const lightImage = link.getAttribute("data-image");
+          const darkImage = link.getAttribute("data-image-dark");
+          const imageUrl = isDark ? darkImage || lightImage : lightImage;
+          if (imageUrl) {
+            previewImg.src = imageUrl;
+            gsap.to(previewContainer, {
+              scale: 1,
+              opacity: 1,
+              duration: 0.4,
+              ease: "power2.out",
+            });
+          }
+        };
+
+        const leaveHandler = () => {
+          gsap.to(previewContainer, {
+            scale: 0,
+            opacity: 0,
+            duration: 0.4,
+            ease: "power2.out",
+          });
+        };
+
+        link.addEventListener("mouseenter", enterHandler as EventListener);
+        link.addEventListener("mouseleave", leaveHandler);
+        blogCleanupFns.push(() => {
+          link.removeEventListener("mouseenter", enterHandler as EventListener);
+          link.removeEventListener("mouseleave", leaveHandler);
+        });
+      });
+    }
+  }
+
+  document.addEventListener("astro:page-load", initBlogs);
+  document.addEventListener("astro:before-swap", cleanupBlogs);
 </script>
 
 <style>
-    .section-header {
-        margin-bottom: var(--space-lg);
-        border-bottom: 1px solid var(--color-border);
-        padding-bottom: var(--space-sm);
-    }
+  .section-header {
+    margin-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-sm);
+  }
 
-    .section-title {
-        font-size: var(--text-sm);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-    }
+  .section-title {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
 
-    .blog-list {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        z-index: 10;
-    }
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 10;
+  }
 
-    .blog-item {
-        border-bottom: 1px solid var(--color-border);
-    }
+  .blog-item {
+    border-bottom: 1px solid var(--color-border);
+  }
 
-    .blog-link {
-        display: grid;
-        grid-template-columns: auto 1fr auto auto;
-        gap: var(--space-md);
-        align-items: baseline;
-        padding: var(--space-lg) var(--space-sm);
-        text-decoration: none;
-        color: inherit;
-        transition: all 0.4s var(--ease-out-expo);
-        border-radius: var(--radius-sm);
-    }
+  .blog-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: var(--space-md);
+    align-items: baseline;
+    padding: var(--space-lg) var(--space-sm);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s var(--ease-out-expo);
+    border-radius: var(--radius-sm);
+  }
 
-    .blog-list:hover .blog-link:not(:hover) {
-        opacity: 0.3;
-        filter: blur(2px);
-    }
+  .blog-list:hover .blog-link:not(:hover) {
+    opacity: 0.3;
+    filter: blur(2px);
+  }
 
-    .blog-link:hover {
-        background: rgba(255, 255, 255, 0.03);
-        padding-left: var(--space-md);
-        padding-right: var(--space-md);
-        transform: scale(1.02);
-    }
+  .blog-link:hover {
+    background: var(--color-surface-hover);
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+    transform: scale(1.02);
+  }
 
-    .index {
-        font-size: var(--text-sm);
+  .index {
+    font-size: var(--text-sm);
+  }
+
+  .title {
+    font-size: var(--text-xl);
+    font-weight: 400;
+  }
+
+  .category,
+  .date {
+    font-size: var(--text-sm);
+    display: none;
+  }
+
+  .blog-preview-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 400px;
+    height: 250px;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    will-change: transform;
+  }
+
+  .preview-inner {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+  }
+
+  #preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .category,
+    .date {
+      display: block;
     }
 
     .title {
-        font-size: var(--text-xl);
-        font-weight: 400;
+      font-size: var(--text-2xl);
     }
-
-    .category,
-    .date {
-        font-size: var(--text-sm);
-        display: none;
-    }
-
-    .blog-preview-image {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 400px;
-        height: 250px;
-        pointer-events: none;
-        z-index: 5;
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0);
-        transform-origin: center;
-        overflow: hidden;
-        border-radius: var(--radius-sm);
-    }
-
-    .preview-inner {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        border-radius: var(--radius-sm);
-    }
-
-    #preview-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-
-    @media (min-width: 768px) {
-        .category,
-        .date {
-            display: block;
-        }
-
-        .title {
-            font-size: var(--text-2xl);
-        }
-    }
+  }
 </style>

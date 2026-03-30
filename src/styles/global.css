@@ -53,23 +53,47 @@ body {
     cursor: default;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.4;
-    mix-blend-mode: overlay;
-}
+
 
 ::selection {
     background-color: var(--color-brand-gold);
     color: var(--color-brand-navy);
+}
+
+/* Theme Image Toggling */
+.light-mode-image {
+    display: none;
+}
+
+.dark-mode-image {
+    display: block;
+}
+
+:root.light .light-mode-image {
+    display: block;
+}
+
+:root.light .dark-mode-image {
+    display: none;
+}
+
+@media (prefers-color-scheme: light) {
+    :root:not(.dark) .light-mode-image {
+        display: block;
+    }
+
+    :root:not(.dark) .dark-mode-image {
+        display: none;
+    }
+}
+
+/* Pre-hide animated elements before JS initializes them (first load only).
+   The .js class is added synchronously in Layout.astro's inline script.
+   After first page-load, .js-loaded is added so view transitions don't
+   crossfade into a blank page. GSAP handles hiding on subsequent loads. */
+:root.js:not(.js-loaded) .fade-up {
+    opacity: 0;
+    transform: translateY(50px);
 }
 
 a {
@@ -145,7 +169,9 @@ a {
 /* Utility */
 .overflow-hidden {
     overflow: hidden;
-}/* Hover Effects */
+}
+
+/* Hover Effects */
 .hover-scale {
     transition: transform 0.3s var(--ease-out-expo);
 }

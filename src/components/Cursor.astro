@@ -1,165 +1,213 @@
-<div class="cursor-follower"></div>
-<div class="cursor-dot"></div>
+<div class='cursor-follower'></div>
+<div class='cursor-dot'></div>
 
 <script is:inline>
-    (function() {
-        var isDisabled = localStorage.getItem("cursorEnabled") !== "true";
-        if (isDisabled) {
-            document.body.classList.add("custom-cursor-disabled");
-        }
-    })();
+  (function () {
+    var stored = localStorage.getItem("cursorEnabled");
+    var isEnabled = stored === "true";
+    if (!isEnabled) {
+      document.body.classList.add("custom-cursor-disabled");
+    } else {
+      document.body.classList.remove("custom-cursor-disabled");
+    }
+  })();
 </script>
 
 <script>
-    import gsap from "gsap";
+  import gsap from "gsap";
 
-    function initCursor() {
-        const cursorDot = document.querySelector(".cursor-dot") as HTMLElement;
-        const cursorFollower = document.querySelector(".cursor-follower") as HTMLElement;
-        const body = document.body;
+  let cursorCleanupFns: (() => void)[] = [];
 
-        const storedPref = localStorage.getItem("cursorEnabled");
-        const isCursorEnabled = storedPref === "true";
+  function cleanupCursor() {
+    cursorCleanupFns.forEach((fn) => fn());
+    cursorCleanupFns = [];
+  }
 
-        if (!isCursorEnabled) {
-            body.classList.add("custom-cursor-disabled");
-        } else {
-            body.classList.remove("custom-cursor-disabled");
-        }
+  function initCursor() {
+    cleanupCursor();
 
-        const toggleBtn = document.getElementById("cursor-toggle");
+    const cursorDot = document.querySelector(".cursor-dot") as HTMLElement;
+    const cursorFollower = document.querySelector(
+      ".cursor-follower",
+    ) as HTMLElement;
+    const body = document.body;
 
-        if (toggleBtn) {
-            const label = toggleBtn.querySelector(".cursor-label");
+    const storedPref = localStorage.getItem("cursorEnabled");
+    const isCursorEnabled = storedPref === "true";
 
-            const updateLabel = (disabled: boolean) => {
-                if (label) {
-                    label.textContent = disabled ? "Enable Cursor" : "Disable Cursor";
-                }
-            };
-
-            updateLabel(!isCursorEnabled);
-
-            toggleBtn.addEventListener("click", () => {
-                const isEnabled = !body.classList.contains("custom-cursor-disabled");
-
-                if (isEnabled) {
-                    body.classList.add("custom-cursor-disabled");
-                    localStorage.setItem("cursorEnabled", "false");
-                    updateLabel(true);
-                } else {
-                    body.classList.remove("custom-cursor-disabled");
-                    localStorage.setItem("cursorEnabled", "true");
-                    updateLabel(false);
-                }
-            });
-        }
-
-        if (window.matchMedia("(pointer: fine)").matches && cursorDot && cursorFollower) {
-            let isVisible = false;
-
-            window.addEventListener("mousemove", (e: MouseEvent) => {
-                if (!isVisible) {
-                    gsap.set([cursorDot, cursorFollower], { 
-                        x: e.clientX, 
-                        y: e.clientY,
-                        xPercent: -50,
-                        yPercent: -50
-                    });
-                    gsap.to([cursorDot, cursorFollower], { opacity: 1, duration: 0.3 });
-                    isVisible = true;
-                }
-
-                gsap.to(cursorDot, {
-                    x: e.clientX,
-                    y: e.clientY,
-                    duration: 0.1,
-                    ease: "power2.out",
-                });
-
-                gsap.to(cursorFollower, {
-                    x: e.clientX,
-                    y: e.clientY,
-                    duration: 0.5,
-                    ease: "power2.out",
-                });
-            });
-
-            const interactiveElements = document.querySelectorAll(
-                "a, button, .project-card, .blog-card, .blog-link",
-            );
-
-            interactiveElements.forEach((el) => {
-                el.addEventListener("mouseenter", () => {
-                    gsap.to(cursorFollower, {
-                        scale: 2,
-                        backgroundColor: "rgba(255, 255, 255, 1)",
-                        border: "none",
-                        duration: 0.3,
-                    });
-                    gsap.to(cursorDot, { scale: 0, duration: 0.3 });
-                });
-
-                el.addEventListener("mouseleave", () => {
-                    gsap.to(cursorFollower, {
-                        scale: 1,
-                        backgroundColor: "transparent",
-                        border: "1px solid var(--color-text)",
-                        duration: 0.3,
-                    });
-                    gsap.to(cursorDot, { scale: 1, duration: 0.3 });
-                });
-            });
-        }
+    if (!isCursorEnabled) {
+      body.classList.add("custom-cursor-disabled");
+    } else {
+      body.classList.remove("custom-cursor-disabled");
     }
 
-    document.addEventListener("astro:page-load", initCursor);
+    const toggleBtn = document.getElementById("cursor-toggle");
+
+    if (toggleBtn) {
+      const newToggle = toggleBtn.cloneNode(true) as HTMLElement;
+      toggleBtn.parentNode?.replaceChild(newToggle, toggleBtn);
+
+      const label = newToggle.querySelector(".cursor-label");
+
+      const updateLabel = (disabled: boolean) => {
+        if (label) {
+          label.textContent = disabled ? "Enable Cursor" : "Disable Cursor";
+        }
+      };
+
+      updateLabel(!isCursorEnabled);
+
+      newToggle.addEventListener("click", () => {
+        const isCurrentlyEnabled = !body.classList.contains("custom-cursor-disabled");
+
+        if (isCurrentlyEnabled) {
+          body.classList.add("custom-cursor-disabled");
+          localStorage.setItem("cursorEnabled", "false");
+          updateLabel(true);
+        } else {
+          body.classList.remove("custom-cursor-disabled");
+          localStorage.setItem("cursorEnabled", "true");
+          updateLabel(false);
+          // Reset so next mousemove re-initializes position + opacity
+          isVisible = false;
+          gsap.set([cursorDot, cursorFollower], { opacity: 0 });
+        }
+      });
+    }
+
+    if (
+      window.matchMedia("(pointer: fine)").matches &&
+      cursorDot &&
+      cursorFollower
+    ) {
+      let isVisible = false;
+
+      const mousemoveHandler = (e: MouseEvent) => {
+        if (!isVisible) {
+          gsap.set([cursorDot, cursorFollower], {
+            x: e.clientX,
+            y: e.clientY,
+            xPercent: -50,
+            yPercent: -50,
+            opacity: 1,
+          });
+          isVisible = true;
+          return;
+        }
+
+        gsap.to(cursorDot, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.1,
+          ease: "none",
+          overwrite: "auto",
+        });
+
+        gsap.to(cursorFollower, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.5,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      };
+
+      window.addEventListener("mousemove", mousemoveHandler);
+      cursorCleanupFns.push(() =>
+        window.removeEventListener("mousemove", mousemoveHandler),
+      );
+
+      const interactiveElements = document.querySelectorAll(
+        "a, button, .project-card, .blog-card, .blog-link",
+      );
+
+      interactiveElements.forEach((el) => {
+        const enterHandler = () => {
+          gsap.to(cursorFollower, {
+            scale: 2,
+            backgroundColor: "rgba(255, 255, 255, 1)",
+            border: "none",
+            duration: 0.3,
+          });
+          gsap.to(cursorDot, { scale: 0, duration: 0.3 });
+        };
+
+        const leaveHandler = () => {
+          gsap.to(cursorFollower, {
+            scale: 1,
+            backgroundColor: "transparent",
+            border: "1px solid var(--color-text)",
+            duration: 0.3,
+          });
+          gsap.to(cursorDot, { scale: 1, duration: 0.3 });
+        };
+
+        el.addEventListener("mouseenter", enterHandler);
+        el.addEventListener("mouseleave", leaveHandler);
+        cursorCleanupFns.push(() => {
+          el.removeEventListener("mouseenter", enterHandler);
+          el.removeEventListener("mouseleave", leaveHandler);
+        });
+      });
+    }
+  }
+
+  document.addEventListener("astro:page-load", initCursor);
+  document.addEventListener("astro:before-swap", cleanupCursor);
 </script>
 
 <style>
+  .cursor-dot,
+  .cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    will-change: transform;
+    contain: layout style;
+  }
+
+  @media (pointer: fine) {
+    :global(body.custom-cursor-disabled) .cursor-dot,
+    :global(body.custom-cursor-disabled) .cursor-follower {
+      display: none !important;
+    }
+
+    :global(body.custom-cursor-disabled),
+    :global(body.custom-cursor-disabled) a,
+    :global(body.custom-cursor-disabled) button {
+      cursor: auto !important;
+    }
+
+    :global(body:not(.custom-cursor-disabled)),
+    :global(body:not(.custom-cursor-disabled) *) {
+      cursor: none !important;
+    }
+  }
+
+  @media (pointer: coarse) {
     .cursor-dot,
     .cursor-follower {
-        position: fixed;
-        top: 0;
-        left: 0;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        opacity: 0;
-        transform: translate(-50%, -50%);
+      display: none !important;
     }
+  }
 
-    @media (pointer: fine) {
-        :global(body.custom-cursor-disabled) .cursor-dot,
-        :global(body.custom-cursor-disabled) .cursor-follower {
-            display: none !important;
-        }
+  .cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-text);
+    mix-blend-mode: normal; /* "difference" can be unpredictable on complex light backgrounds */
+    z-index: 10000;
+  }
 
-        :global(body.custom-cursor-disabled),
-        :global(body.custom-cursor-disabled) a,
-        :global(body.custom-cursor-disabled) button {
-            cursor: auto !important;
-        }
-    }
-
-    @media (pointer: coarse) {
-        .cursor-dot,
-        .cursor-follower {
-            display: none !important;
-        }
-    }
-
-    .cursor-dot {
-        width: 8px;
-        height: 8px;
-        background-color: var(--color-text);
-        mix-blend-mode: difference;
-    }
-
-    .cursor-follower {
-        width: 40px;
-        height: 40px;
-        border: 1px solid var(--color-text);
-        mix-blend-mode: difference;
-    }
+  .cursor-follower {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-text);
+    mix-blend-mode: difference;
+  }
 </style>

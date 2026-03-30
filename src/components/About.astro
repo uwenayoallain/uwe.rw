@@ -72,9 +72,24 @@
         display: inline-block;
         font-size: var(--text-base);
         color: var(--color-text);
-        text-decoration: underline;
-        text-underline-offset: 4px;
+        text-decoration: none;
         margin-top: var(--space-sm);
+        position: relative;
+    }
+
+    .about-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1.5px;
+        background: var(--color-text);
+        transition: width 0.4s var(--ease-out-expo);
+    }
+
+    .about-link:hover::after {
+        width: 100%;
     }
 
     .about-stats {

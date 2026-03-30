@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 
 const posts = (await getCollection("posts")).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -24,15 +25,17 @@ const posts = (await getCollection("posts")).sort(
                     {
                         posts.map((post) => (
                             <a
-                                href={`/blog/${post.slug}/`}
+                                href={`/blog/${post.id}/`}
                                 class="blog-card fade-up"
                             >
                                 <div class="blog-image-container">
                                     {post.data.heroImage && (
-                                        <img
+                                        <Image
                                             src={post.data.heroImage}
                                             alt={post.data.title}
                                             class="blog-image"
+                                            width={600}
+                                            loading="lazy"
                                         />
                                     )}
                                 </div>

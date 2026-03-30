@@ -1,0 +1,54 @@
+---
+title: "Vibe Coding Is Real and I Am Not Going Back"
+description: "I built a full app by describing what I wanted instead of writing every line. It worked better than I expected."
+pubDate: "2025-12-15"
+heroImage: "../../assets/blog/records-app-light.png"
+heroImageDark: "../../assets/blog/records-app-dark.png"
+tags: ["Dev Log"]
+---
+
+# Vibe Coding Is Real and I Am Not Going Back
+
+Someone coined the term "vibe coding" and I thought it was a joke. The idea that you could build software by just describing what you want, iterating through conversation, and barely touching the actual code yourself. It sounded like something a non-developer would dream up.
+
+Then I tried it. And now I have a working app that I mostly talked into existence.
+
+## How it started
+
+I needed a financial tracker for splitting expenses with friends. The kind of thing I would normally spend a weekend scaffolding — setting up the database, wiring up auth, building forms. Instead, I opened an AI coding assistant and started describing what I wanted.
+
+"I need a page that shows all transactions for a group. Each transaction has a payer, an amount, and a list of people who owe. Calculate who owes what."
+
+And it just... worked. Not perfectly on the first try, but close enough that I was refining instead of building from zero.
+
+## What vibe coding actually looks like
+
+It is not magic. You still need to know what you want. You still need to understand enough about how software works to evaluate what the AI gives you. But the flow is completely different.
+
+Instead of writing code line by line, you describe behavior. "When a user adds an expense, split it equally among the selected people. If it does not divide evenly, handle the remainder." Then you look at what comes back, try it, and adjust.
+
+The cycle is: describe → generate → test → refine. Over and over. It feels less like programming and more like directing. You are the architect, and the AI is a very fast (and sometimes overconfident) builder.
+
+## Where it breaks down
+
+AI is great at common patterns. CRUD apps, standard UI components, well-documented APIs — it handles those well. Where it struggles is anything that requires deep context about _your specific system_. The debt settlement logic in my app was a good example. The AI kept producing solutions that worked for simple cases but fell apart when things got messy — partial payments, people leaving groups, overlapping expenses.
+
+For those parts, I had to think it through myself, sketch the logic, and then implement it with AI assisting on the details. The hard thinking was still mine.
+
+And debugging. When something breaks in AI-generated code, you need to actually understand the code to fix it. If you have been blindly accepting suggestions without reading them, you are going to have a bad time when things go wrong.
+
+## The productivity difference is real
+
+I am not exaggerating when I say this approach cut my development time in half. Maybe more. The parts that used to take hours — boilerplate, form handling, repetitive UI work — now take minutes. That freed me up to spend more time on the parts that actually matter: the user experience, the edge cases, the stuff that makes someone choose your app over a WhatsApp group.
+
+## Who this works for
+
+If you have been coding for a while and understand how applications are structured, vibe coding is a massive upgrade. You know enough to steer the AI, catch its mistakes, and fill in the gaps.
+
+If you are just starting out, I would be more cautious. You need to understand what good code looks like before you can evaluate AI-generated code. Otherwise you are building on a foundation you do not understand, and that catches up with you.
+
+## The uncomfortable truth
+
+A lot of what I used to spend my time on — the repetitive, mechanical parts of coding — is not valuable anymore. That is a weird thing to accept. But the parts that are still valuable, like critical thinking, system design, and understanding users, are more important than ever.
+
+I would rather spend my time on those things anyway.

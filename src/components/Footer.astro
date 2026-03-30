@@ -1,392 +1,454 @@
 ---
+
 const links = [
-    { name: "GitHub", url: "https://github.com/uwenayoallain", label: "Code" },
-    {
-        name: "LinkedIn",
-        url: "https://linkedin.com/in/uwenayoallain",
-        label: "Connect",
-    },
-    { name: "Email", url: "mailto:hello@uwe.rw", label: "Contact" },
-    { name: "Twitter/X", url: "https://x.com/uwenayoallain", label: "Follow" },
+  { name: "GitHub", url: "https://github.com/uwenayoallain", label: "Code" },
+  {
+    name: "LinkedIn",
+    url: "https://linkedin.com/in/uwenayoallain",
+    label: "Connect",
+  },
+  { name: "Email", url: "mailto:hello@uwe.rw", label: "Contact" },
+  { name: "Twitter/X", url: "https://x.com/uwenayoallain", label: "Follow" },
 ];
 
 const currentYear = new Date().getFullYear();
 ---
 
-<footer id="contact" class="footer section">
-    <div class="footer-content">
-        <div class="footer-grid">
-            <h2 class="cta-text text-giant font-mono">
-                LET'S<br />WORK<br />TOGETHER
-            </h2>
+<footer id='contact' class='footer section'>
+  <div class='footer-content'>
+    <div class='footer-grid'>
+      <h2 class='cta-text text-giant font-mono'>
+        LET'S<br />WORK<br />TOGETHER
+      </h2>
 
-            <div class="form-container glass">
-                <form
-                    id="contact-form"
-                    class="contact-form"
-                    action="https://formspree.io/f/mdkjrdgq"
-                    method="POST"
-                >
-                    <div class="form-content">
-                        <div class="form-group">
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Name"
-                                required
-                                class="form-input"
-                            />
-                        </div>
-                        <div class="form-group">
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                required
-                                class="form-input"
-                            />
-                        </div>
-                        <div class="form-group">
-                            <textarea
-                                name="message"
-                                placeholder="Message"
-                                rows="3"
-                                required
-                                class="form-input"></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn magnetic-link">
-                            Send Message <span class="arrow">&nearr;</span>
-                        </button>
-                    </div>
-                </form>
-
-                <div class="success-message">
-                    <h3 class="success-title">MESSAGE<br />SENT</h3>
-                    <p class="success-text">
-                        Thank you for reaching out.<br />I'll get back to you
-                        shortly.
-                    </p>
-                </div>
-
-                <div class="error-message hidden">
-                    <p>Something went wrong. Please try again.</p>
-                </div>
+      <div class='form-container glass'>
+        <form
+          id='contact-form'
+          class='contact-form'
+          action='https://formspree.io/f/mdkjrdgq'
+          method='POST'>
+          <div class='form-content'>
+            <div class='form-group'>
+              <input
+                type='text'
+                name='name'
+                placeholder='Name'
+                aria-label='Name'
+                required
+                class='form-input'
+              />
             </div>
+            <div class='form-group'>
+              <input
+                type='email'
+                name='email'
+                placeholder='Email'
+                aria-label='Email'
+                required
+                class='form-input'
+              />
+            </div>
+            <div class='form-group'>
+              <textarea
+                name='message'
+                placeholder='Message'
+                aria-label='Message'
+                rows='3'
+                required
+                class='form-input'></textarea>
+            </div>
+            <button type='submit' class='submit-btn magnetic-link'>
+              Send Message <span class='arrow'>&nearr;</span>
+            </button>
+          </div>
+        </form>
+
+        <div class='success-message'>
+          <h3 class='success-title'>MESSAGE<br />SENT</h3>
+          <p class='success-text'>
+            Thank you for reaching out.<br />I'll get back to you shortly.
+          </p>
         </div>
 
-        <div class="footer-bottom">
-            <div class="links-grid">
-                {
-                    links.map((link) => (
-                        <a
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="footer-link magnetic-link"
-                        >
-                            <span class="link-name">{link.name}</span>
-                            <span class="arrow">&nearr;</span>
-                        </a>
-                    ))
-                }
-            </div>
-
-            <div class="copyright text-muted font-mono">
-                &copy; {currentYear} UWENAYO Alain Pacifique.
-            </div>
+        <div class='error-message hidden'>
+          <p>Something went wrong. Please try again.</p>
         </div>
+      </div>
     </div>
+
+    <div class='footer-bottom'>
+      <div class='links-grid'>
+        {
+          links.map((link) => (
+            <a
+              href={link.url}
+              target='_blank'
+              rel='noopener noreferrer'
+              class='footer-link magnetic-link'>
+              <span class='link-name'>{link.name}</span>
+              <span class='arrow'>&nearr;</span>
+            </a>
+          ))
+        }
+      </div>
+
+      <div class='footer-right'>
+        <div class='copyright text-muted font-mono'>
+          &copy; {currentYear} UWENAYO Alain Pacifique.
+        </div>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <script>
-    document.addEventListener("astro:page-load", () => {
-        const ctaText = document.querySelector(".cta-text") as HTMLElement;
-        const formContainer = document.querySelector(
-            ".form-container",
-        ) as HTMLElement;
-        const form = document.getElementById("contact-form") as HTMLFormElement;
-        const errorMessage = document.querySelector(
-            ".error-message",
-        ) as HTMLElement;
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import SplitType from "split-type";
 
-        if (ctaText) {
-            const colors = [
-                "var(--color-brand-gold)",
-                "var(--color-brand-navy)",
-            ];
+  gsap.registerPlugin(ScrollTrigger);
 
-            let currentIndex = Math.floor(Math.random() * colors.length);
+  let splitCta: SplitType | null = null;
+  let ctaScrollTrigger: ScrollTrigger | null = null;
 
-            const updateColor = () => {
-                ctaText.style.setProperty(
-                    "--hover-color",
-                    colors[currentIndex],
-                );
-            };
+  function cleanupFooter() {
+    if (splitCta) {
+      splitCta.revert();
+      splitCta = null;
+    }
+    if (ctaScrollTrigger) {
+      ctaScrollTrigger.kill();
+      ctaScrollTrigger = null;
+    }
+  }
 
-            // Set initial random color
-            updateColor();
+  function initFooter() {
+    cleanupFooter();
 
-            // Change color on mouse leave (alternating)
-            ctaText.addEventListener("mouseleave", () => {
-                currentIndex = (currentIndex + 1) % colors.length;
-                updateColor();
-            });
+    const ctaText = document.querySelector(".cta-text") as HTMLElement;
+    const formContainer = document.querySelector(
+      ".form-container",
+    ) as HTMLElement;
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    const errorMessage = document.querySelector(
+      ".error-message",
+    ) as HTMLElement;
+
+    if (ctaText) {
+      const gold = "var(--color-brand-gold)";
+      const blue = "var(--color-brand-navy)";
+      const colors = [gold, blue];
+
+      let currentIndex = Math.floor(Math.random() * colors.length);
+      ctaText.style.setProperty("--hover-color", colors[currentIndex]);
+
+      ctaText.addEventListener("mouseenter", () => {
+        ctaText.style.setProperty("--hover-color", colors[currentIndex]);
+      });
+
+      ctaText.addEventListener("mouseleave", () => {
+        currentIndex = (currentIndex + 1) % colors.length;
+      });
+
+      // SplitText Animation for large CTA
+      splitCta = new SplitType(ctaText, { types: "lines,words" });
+
+      if (splitCta.words) {
+        const isViewTransition = document.documentElement.classList.contains("js-loaded");
+
+        if (isViewTransition) {
+          gsap.set(splitCta.words, { y: 0, opacity: 1 });
+        } else {
+          gsap.set(splitCta.words, { y: 40, opacity: 0 });
+
+          const animation = gsap.to(splitCta.words, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.06,
+            duration: 0.7,
+            ease: "power3.out",
+            paused: true,
+          });
+
+          ctaScrollTrigger = ScrollTrigger.create({
+            trigger: ".footer",
+            start: "top 80%",
+            onEnter: () => animation.play(),
+            once: true,
+          });
         }
+      }
+    }
 
-        if (form && formContainer) {
-            form.addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const formData = new FormData(form);
+    if (form && formContainer) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
 
-                try {
-                    const response = await fetch(form.action, {
-                        method: "POST",
-                        body: formData,
-                        headers: {
-                            Accept: "application/json",
-                        },
-                    });
+        try {
+          const response = await fetch(form.action, {
+            method: "POST",
+            body: formData,
+            headers: {
+              Accept: "application/json",
+            },
+          });
 
-                    if (response.ok) {
-                        formContainer.classList.add("submitted");
-                        form.reset();
-                    } else {
-                        throw new Error("Form submission failed");
-                    }
-                } catch (error) {
-                    errorMessage.classList.remove("hidden");
-                    setTimeout(() => {
-                        errorMessage.classList.add("hidden");
-                    }, 5000);
-                }
-            });
+          if (response.ok) {
+            formContainer.classList.add("submitted");
+            form.reset();
+          } else {
+            throw new Error("Form submission failed");
+          }
+        } catch (error) {
+          errorMessage.classList.remove("hidden");
+          setTimeout(() => {
+            errorMessage.classList.add("hidden");
+          }, 5000);
         }
-    });
+      });
+    }
+  }
+
+  document.addEventListener("astro:page-load", initFooter);
+  document.addEventListener("astro:before-swap", cleanupFooter);
 </script>
 
 <style>
-    .footer {
-        margin-bottom: 0;
-        padding-bottom: var(--space-lg);
-        min-height: 90vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-    }
+  .footer {
+    margin-bottom: 0;
+    padding-bottom: var(--space-lg);
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
 
-    .cta-text {
-        line-height: 0.8;
-        letter-spacing: -0.05em;
-        margin-bottom: var(--space-2xl);
-        color: var(--color-text);
-        transition: color 0.3s ease;
-        cursor: default;
-        font-size: clamp(3rem, 12vw, 10rem);
-    }
+  .cta-text {
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    margin-bottom: var(--space-2xl);
+    color: var(--color-text);
+    transition: color 0.3s ease;
+    cursor: default;
+    font-size: clamp(3.5rem, 14vw, 12rem);
+    font-weight: 800;
+  }
 
-    .cta-text:hover {
-        color: var(--hover-color, var(--color-brand-gold));
-    }
+  .cta-text:hover {
+    color: var(--hover-color, var(--color-accent));
+  }
 
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+  }
+
+  @media (min-width: 968px) {
     .footer-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: var(--space-xl);
-        margin-bottom: var(--space-2xl);
+      grid-template-columns: 1.5fr 1fr;
+      align-items: end;
     }
+  }
 
-    @media (min-width: 968px) {
-        .footer-grid {
-            grid-template-columns: 1.5fr 1fr;
-            align-items: end;
-        }
-    }
+  .form-container {
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    position: relative;
+    min-height: 300px; /* Prevent layout shift */
+    display: grid;
+    grid-template-areas: "stack";
+    align-items: center;
+  }
 
-    .form-container {
-        padding: var(--space-lg);
-        border-radius: var(--radius-lg);
-        position: relative;
-        min-height: 300px; /* Prevent layout shift */
-        display: grid;
-        grid-template-areas: "stack";
-        align-items: center;
-    }
+  .contact-form {
+    grid-area: stack;
+    width: 100%;
+    transition:
+      opacity 0.5s ease,
+      visibility 0.5s ease;
+  }
 
-    .contact-form {
-        grid-area: stack;
-        width: 100%;
-        transition:
-            opacity 0.5s ease,
-            visibility 0.5s ease;
-    }
+  .form-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
 
-    .form-content {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-md);
-    }
+  .form-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--color-border);
+    padding: var(--space-md) 0;
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    transition: all 0.4s var(--ease-out-expo);
+    border-radius: 0;
+  }
 
-    .form-input {
-        width: 100%;
-        background: transparent;
-        border: none;
-        border-bottom: 1px solid var(--color-border);
-        padding: var(--space-sm) 0;
-        color: var(--color-text);
-        font-family: var(--font-mono);
-        font-size: var(--text-base);
-        transition:
-            border-color 0.3s ease,
-            padding 0.3s ease;
-    }
+  .form-input:focus {
+    outline: none;
+    border-bottom-color: var(--color-text);
+    padding-left: var(--space-sm);
+    background: rgba(255, 255, 255, 0.02);
+  }
 
-    .form-input:focus {
-        outline: none;
-        border-color: var(--color-brand-gold);
-        padding-left: var(--space-xs);
-    }
+  .form-input::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
 
-    .form-input::placeholder {
-        color: var(--color-text-muted);
-        opacity: 0.5;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-    }
+  .submit-btn {
+    align-self: flex-start;
+    background: var(--color-text);
+    color: var(--color-bg);
+    border: 1px solid var(--color-text);
+    padding: var(--space-md) var(--space-xl);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.4s var(--ease-out-expo);
+  }
 
-    .submit-btn {
-        align-self: flex-start;
-        background: var(--color-text);
-        color: var(--color-bg);
-        border: none;
-        padding: var(--space-sm) var(--space-xl);
-        border-radius: 100px;
-        font-family: var(--font-mono);
-        font-size: var(--text-sm);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition:
-            transform 0.3s var(--ease-out-expo),
-            background-color 0.3s ease;
-    }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    background: transparent;
+    color: var(--color-text);
+  }
 
-    .submit-btn:hover {
-        transform: scale(1.05);
-        background-color: var(--color-brand-gold);
-        color: var(--color-brand-navy);
-    }
+  .success-message {
+    grid-area: stack;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.5s ease,
+      visibility 0.5s ease;
+    z-index: 10;
+    pointer-events: none;
+  }
 
-    .success-message {
-        grid-area: stack;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        opacity: 0;
-        visibility: hidden;
-        transition:
-            opacity 0.5s ease,
-            visibility 0.5s ease;
-        z-index: 10;
-        pointer-events: none;
-    }
+  /* State classes */
+  .form-container.submitted .contact-form {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 
-    /* State classes */
-    .form-container.submitted .contact-form {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-    }
+  .form-container.submitted .success-message {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
 
-    .form-container.submitted .success-message {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: all;
-    }
+  .success-title {
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--color-brand-gold);
+    margin-bottom: var(--space-md);
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+  }
 
-    .success-title {
-        font-family: var(--font-mono);
-        font-size: 2.5rem;
-        line-height: 1;
-        color: var(--color-brand-gold);
-        margin-bottom: var(--space-md);
-        text-transform: uppercase;
-        letter-spacing: -0.05em;
-    }
+  .success-text {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
 
-    .success-text {
-        color: var(--color-text-muted);
-        font-family: var(--font-mono);
-        font-size: var(--text-sm);
-        line-height: 1.5;
-    }
+  .error-message {
+    position: absolute;
+    bottom: var(--space-sm);
+    left: 0;
+    width: 100%;
+    color: #ff4444;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-align: center;
+    z-index: 20;
+  }
 
-    .error-message {
-        position: absolute;
-        bottom: var(--space-sm);
-        left: 0;
-        width: 100%;
-        color: #ff4444;
-        font-family: var(--font-mono);
-        font-size: var(--text-sm);
-        text-align: center;
-        z-index: 20;
-    }
+  .error-message.hidden {
+    display: none;
+  }
 
-    .error-message.hidden {
-        display: none;
-    }
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-lg);
+  }
 
+  @media (min-width: 768px) {
     .footer-bottom {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-xl);
-        border-top: 1px solid var(--color-border);
-        padding-top: var(--space-lg);
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
     }
+  }
 
-    @media (min-width: 768px) {
-        .footer-bottom {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-    }
+  .links-grid {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
 
-    .links-grid {
-        display: flex;
-        gap: var(--space-sm);
-        flex-wrap: wrap;
-    }
+  .footer-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-base);
+    padding: var(--space-xs) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s var(--ease-out-expo);
+  }
 
-    .footer-link {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: var(--text-base);
-        padding: var(--space-xs) var(--space-md);
-        border: 1px solid var(--color-border);
-        border-radius: 100px;
-        background: rgba(255, 255, 255, 0.01);
-        backdrop-filter: blur(10px);
-        transition: all 0.3s var(--ease-out-expo);
-    }
+  .footer-link:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+    border-color: var(--color-text);
+    transform: translateY(-2px);
+  }
 
-    .footer-link:hover {
-        background: var(--color-text);
-        color: var(--color-bg);
-        border-color: var(--color-text);
-        transform: translateY(-2px);
-    }
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-sm);
+  }
 
-    .copyright {
-        font-size: var(--text-sm);
-        color: var(--color-text-muted);
-        opacity: 0.6;
+  @media (max-width: 768px) {
+    .footer-right {
+      align-items: flex-start;
     }
+  }
+
+  .copyright {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    opacity: 0.6;
+  }
 </style>
