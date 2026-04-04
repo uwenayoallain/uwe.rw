@@ -4,59 +4,67 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an Astro-based personal website for uwe.rw/SAINT featuring a minimal design with creative typography and brand colors. The project uses TypeScript, Tailwind CSS, and includes utility libraries for math, animation, DOM manipulation, and Three.js helpers.
+Personal portfolio website for UWENAYO Alain Pacifique at uwe.rw. Built with Astro 6, Tailwind CSS 4, GSAP animations, and Lenis smooth scrolling. Dark/light theme support with a cinematic dark-first aesthetic.
 
 ## Development Commands
 
-- `pnpm install`: Install dependencies (rerun when `pnpm-lock.yaml` changes)
-- `pnpm dev`: Start development server at `http://localhost:4321` with HMR
-- `pnpm build`: Create production build in `dist/` directory
-- `pnpm preview`: Serve the production build locally for testing
-- `pnpm astro check`: Run TypeScript and accessibility checks before committing
-- `pnpm astro ...`: Run other Astro CLI commands
+- `pnpm dev` — dev server at localhost:4321
+- `pnpm build` — production build to `dist/`
+- `pnpm preview` — serve production build locally
+- `pnpm astro check` — TypeScript and accessibility checks (run before committing)
 
-## Architecture & File Organization
+## Architecture
 
-- **Pages**: Routes live in `src/pages/` with kebab-case filenames mapping to URLs
-- **Layouts**: Shared chrome goes in `src/layouts/` (mount `<ViewTransitions />` in layout heads)
-- **Components**: Reusable pieces in `src/components/` with PascalCase naming
-- **Utilities**: Math, animation, DOM, and Three.js helpers in `src/lib/utils/` with barrel exports
-- **Styles**: Global styles in `src/styles/global.css` with Tailwind CSS integration
-- **Static Assets**: Public files (favicons, robots.txt) in `public/` directory
+### Content System
 
-## Brand & Styling System
+Two content sources with different patterns:
 
-The site uses a custom brand color palette defined in CSS custom properties:
-- `--color-brand-navy`: #1B487B
-- `--color-brand-gold`: #F4D619  
-- `--color-brand-blush`: #EACAAF
-- `--color-brand-stone`: #7A7A7A
+- **Blog posts**: Astro Content Collections using MDX files in `src/content/posts/`. Schema defined in `src/content.config.ts` (title, description, pubDate, heroImage with optional dark variant, tags). Routes via `src/pages/blog/[...slug].astro`.
+- **Projects**: Static TypeScript data in `src/data/projects.ts` (not content collections). Each project has light/dark image pairs. Routes via `src/pages/projects/[slug].astro` using `getStaticPaths()`.
 
-Typography uses three font families:
-- Display: 'Jersey 25' for headlines
-- Sans: 'Space Grotesk' for body text
-- Accent: 'Space Grotesk' for accented content
+### Animation System
 
-## Key Dependencies
+The animation architecture has two layers that must coordinate with Astro's View Transitions (`ClientRouter`):
 
-- **Astro 5**: Static site generator with TypeScript support
-- **Tailwind CSS 4**: Utility-first styling with custom theme
-- **Three.js**: 3D graphics capabilities with utilities
-- **GSAP**: Advanced animations
-- **Lenis**: Smooth scrolling
-- **Motion**: Additional animation library
+1. **Global animations** (`src/lib/animations.js`): Central init/cleanup lifecycle. `initAnimations()` runs on `astro:page-load`, `cleanupAnimations()` runs on `astro:before-swap`. Manages Lenis smooth scrolling, ScrollTrigger instances, fade-up animations (`.fade-up` CSS class), magnetic links, and project card staggering. Important: component scripts register their own ScrollTriggers *before* `initAnimations()` runs — do not add cleanup at the start of init.
 
-## Code Style Guidelines
+2. **Page-level animations**: Individual `<script>` blocks in detail pages (`blog/[...slug].astro`, `projects/[slug].astro`) register their own GSAP/ScrollTrigger animations on `astro:page-load`. These include progress bars, parallax hero images, and content reveal animations.
 
-- Use 2-space indentation for all files (.astro, .ts, .css)
-- Prefer Tailwind utilities over custom CSS
-- Use PascalCase for components, kebab-case for routes
-- Keep imports relative within features
-- Follow Astro's strict TypeScript configuration
+**FOUC prevention**: CSS in `global.css` hides `.fade-up` elements when `.js` class is present but `.js-loaded` is not (first load only). The `.js` class is added synchronously via inline script in Layout.astro; `.js-loaded` is added after first animation init. Page-level scripts use scoped `:global(.js)` styles for the same purpose.
 
-## Testing & Quality
+### Theming
 
-- No automated test suite currently exists
-- Rely on `pnpm astro check` for type checking
-- Manually test in both `pnpm dev` and `pnpm preview`
-- Site includes comprehensive SEO metadata and structured data
+Three-state theme system (light/dark/system) with CSS custom properties:
+
+- Variables defined in `src/styles/variables.css` — dark theme is `:root` default, light via `:root.light` or `prefers-color-scheme: light` on `:root:not(.dark)`
+- Brand colors in `src/styles/global.css` — gold (#F4D619), navy (#1B487B), blush (#EACAAF)
+- Theme-aware images use `.light-mode-image`/`.dark-mode-image` CSS classes toggled by `:root.light`
+- Theme preference stored in `localStorage("theme")`, applied via inline script in Layout.astro head to prevent flash
+
+### Utility Libraries (`src/lib/utils/`)
+
+Barrel-exported from `src/lib/utils/index.ts`:
+- `math.ts` — clamp, lerp, map range
+- `animation.ts` — RAF loop manager, Lenis factory, GSAP timeline helpers, `animateIn`, `scrubValue`, lazy-loaded `scrollTo`
+- `dom.ts` — event listener cleanup helpers (`on`, `onResize`, `onIntersect`), scroll lock, CSS var setter, media query checks
+- `three.ts` — Three.js helpers
+
+### Layout
+
+Single layout (`src/layouts/Layout.astro`) wraps all pages. Includes: SEO meta, `ClientRouter` for view transitions, theme init script, global chrome (Navbar, Footer, Preloader, custom Cursor, GridBackground), and the animation lifecycle script.
+
+## Styling
+
+- Tailwind CSS 4 integrated via Vite plugin (not Astro integration) — configured in `astro.config.mjs`
+- Custom font families registered in `global.css` `@theme` block: `--font-family-sans` (Space Grotesk), `--font-family-display` (Jersey 25)
+- Fluid type scale using `clamp()` in CSS custom properties (`--text-xs` through `--text-giant`)
+- Component styles use Astro's scoped `<style>` blocks; use `:global()` when targeting child content or animation states
+
+## Key Conventions
+
+- 2-space indentation everywhere
+- PascalCase components, kebab-case routes/pages
+- Astro strict TypeScript config
+- `sharp` is included for Astro image optimization
+- MDX support via `@astrojs/mdx` integration
+- Sitemap generation via `@astrojs/sitemap` (site: https://uwe.rw)
